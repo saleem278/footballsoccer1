@@ -1,5 +1,6 @@
 import React from 'react';
 import {View, Text, TouchableOpacity, Image, StyleSheet} from 'react-native';
+import {fonts} from '../assets';
 
 const HomeItem = ({item}) => {
   return (
@@ -12,21 +13,42 @@ const HomeItem = ({item}) => {
       <View style={styles.teamContainer}>
         <Image source={item.imageFirstTeam} style={styles.teamImage} />
         <Text style={styles.teamName}>{item.firstTeam}</Text>
-        <Text style={styles.score}>{item.scoreFirstTeam}</Text>
       </View>
-      <View style={styles.vsContainer}>
-        <Text style={styles.vs}>vs</Text>
-        <Text style={styles.degree}>{item.degree}'</Text>
+      <View
+        style={[
+          styles.vsContainer,
+          {
+            height: 160,
+          },
+        ]}>
+        <Text style={styles.score}>{'Full Time'}</Text>
+        <View
+          style={{
+            width: '70%',
+            alignItems: 'center',
+            justifyContent: 'space-around',
+            flexDirection: 'row',
+          }}>
+          <Text style={styles.vs}>{item?.scoreFirstTeam}</Text>
+          <Text style={styles.vs}>-</Text>
+          <Text style={styles.vs}>{item?.scoreSecondTam}</Text>
+        </View>
+        {item?.status === 'Live' ? (
+          <Text style={styles.degree}>{item.degree}'</Text>
+        ) : (
+          <View style={styles.timeContainer}>
+            <Text style={styles.time}>{item.time}</Text>
+            <Text style={styles.day}>{item.day}</Text>
+          </View>
+        )}
       </View>
       <View style={styles.teamContainer}>
         <Image source={item.imageSecondTeam} style={styles.teamImage} />
         <Text style={styles.teamName}>{item.secondTeam}</Text>
-        <Text style={styles.score}>{item.scoreSecondTam}</Text>
       </View>
-      {item.time && (
-        <View style={styles.timeContainer}>
-          <Text style={styles.time}>{item.time}</Text>
-          <Text style={styles.day}>{item.day}</Text>
+      {item?.status === 'Live' && (
+        <View style={styles.liveContainer}>
+          <Text style={styles.live}>Live Now</Text>
         </View>
       )}
     </TouchableOpacity>
@@ -41,9 +63,12 @@ const styles = StyleSheet.create({
     padding: 15,
     borderRadius: 15,
     marginBottom: 15,
+    width: '100%',
+    height: 200,
   },
   teamContainer: {
     alignItems: 'center',
+    width: '35%',
   },
   teamImage: {
     width: 50,
@@ -53,41 +78,68 @@ const styles = StyleSheet.create({
   },
   teamName: {
     color: '#FFF',
-    fontSize: 16,
-    fontWeight: 'bold',
+    fontSize: 12,
+    fontWeight: '600',
+    fontFamily: fonts.medium,
   },
   score: {
     color: '#FFF',
-    fontSize: 18,
+    fontSize: 10,
+    fontWeight: '600',
+    fontFamily: fonts.medium,
   },
   vsContainer: {
     alignItems: 'center',
+    flexDirection: 'column',
+    justifyContent: 'space-evenly',
+    width: '30%',
   },
   vs: {
     color: '#FFF',
-    fontSize: 16,
-    fontWeight: 'bold',
+    fontSize: 24,
+    fontWeight: '700',
+    fontFamily: fonts.medium,
   },
   degree: {
     color: '#FFF',
     fontSize: 16,
+    fontWeight: '700',
+    fontFamily: fonts.medium,
   },
   timeContainer: {
-    alignItems: 'flex-end',
+    alignItems: 'center',
   },
   time: {
     color: '#FFF',
-    fontSize: 14,
+    fontSize: 10,
+    fontFamily: fonts.medium,
+    fontWeight: '600',
   },
   day: {
     color: '#FFF',
-    fontSize: 14,
+    fontSize: 8,
+    fontFamily: fonts.medium,
+    fontWeight: '600',
   },
   teamImage: {
-    width: 80,
-    height: 80,
+    width: 90,
+    height: 90,
     resizeMode: 'contain',
     marginBottom: 5,
+  },
+  liveContainer: {
+    position: 'absolute',
+    backgroundColor: '#ED1645',
+    borderRadius: 30,
+    padding: 4,
+    right: 10,
+    top: 10,
+  },
+  live: {
+    fontSize: 9,
+    fontFamily: fonts.medium,
+    fontWeight: '600',
+    color: 'white',
   },
 });
 

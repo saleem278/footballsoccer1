@@ -1,4 +1,4 @@
-import {IconPath} from '../assets';
+import {IconPath, ImagePath} from '../assets';
 
 export const HomeData = [
   {
@@ -75,35 +75,58 @@ export const newsData = [
     descriptionsecond:
       'The 22-year-old Benfica striker has been in superb form this season, scoring 34 goals for the Portuguese outfit. His goal against Ajax in the Champions League will certainly have made an impression on newly-appointed United manager Erik ten Hag.',
     descriptionthird: `According to Give Me Sport journalist Dean Jones, a deal for Nunez would set United back £50.6m with Benfica having reportedly lined up Stuttgart's Sasa Kalajdzic as a replacement. Other reports have suggested that Benfica would be looking to cash in on the Uruguayan in order to fund their summer transfer window. Atletico Madrid are believed to be the only club likely to challenge United for Nunez.`,
-    teamIcon: IconPath.teamfirst,
+    teamIcon: ImagePath.firstnews,
     time: '7 hours ago',
   },
   {
     id: 2,
     title: `Kane an inspiration for Spurs' squad, says Mason`,
     newstitle: 'Real madrid Official',
-    teamIcon: IconPath.teamfour,
+    teamIcon: ImagePath.secondnews,
     time: '30 min ago',
+    descriptionfirst:
+      'Manchester United are reportedly extremely close to completing the signing of Darwin Nunez.',
+    descriptionsecond:
+      'The 22-year-old Benfica striker has been in superb form this season, scoring 34 goals for the Portuguese outfit. His goal against Ajax in the Champions League will certainly have made an impression on newly-appointed United manager Erik ten Hag.',
+    descriptionthird: `According to Give Me Sport journalist Dean Jones, a deal for Nunez would set United back £50.6m with Benfica having reportedly lined up Stuttgart's Sasa Kalajdzic as a replacement. Other reports have suggested that Benfica would be looking to cash in on the Uruguayan in order to fund their summer transfer window. Atletico Madrid are believed to be the only club likely to challenge United for Nunez.`,
   },
   {
     id: 3,
     title: `Kane an inspiration for Spurs' squad, says Mason`,
     newstitle: 'Real madrid Official',
-    teamIcon: IconPath.teamfour,
+    teamIcon: ImagePath.firstnews,
     time: '50 min ago',
+
+    descriptionfirst:
+      'Manchester United are reportedly extremely close to completing the signing of Darwin Nunez.',
+    descriptionsecond:
+      'The 22-year-old Benfica striker has been in superb form this season, scoring 34 goals for the Portuguese outfit. His goal against Ajax in the Champions League will certainly have made an impression on newly-appointed United manager Erik ten Hag.',
+    descriptionthird: `According to Give Me Sport journalist Dean Jones, a deal for Nunez would set United back £50.6m with Benfica having reportedly lined up Stuttgart's Sasa Kalajdzic as a replacement. Other reports have suggested that Benfica would be looking to cash in on the Uruguayan in order to fund their summer transfer window. Atletico Madrid are believed to be the only club likely to challenge United for Nunez.`,
   },
   {
     id: 4,
     title: `Kane an inspiration for Spurs' squad, says Mason`,
     newstitle: 'Real madrid Official',
-    teamIcon: IconPath.teamfour,
+    teamIcon: ImagePath.secondnews,
     time: '55 min ago',
+
+    descriptionfirst:
+      'Manchester United are reportedly extremely close to completing the signing of Darwin Nunez.',
+    descriptionsecond:
+      'The 22-year-old Benfica striker has been in superb form this season, scoring 34 goals for the Portuguese outfit. His goal against Ajax in the Champions League will certainly have made an impression on newly-appointed United manager Erik ten Hag.',
+    descriptionthird: `According to Give Me Sport journalist Dean Jones, a deal for Nunez would set United back £50.6m with Benfica having reportedly lined up Stuttgart's Sasa Kalajdzic as a replacement. Other reports have suggested that Benfica would be looking to cash in on the Uruguayan in order to fund their summer transfer window. Atletico Madrid are believed to be the only club likely to challenge United for Nunez.`,
   },
   {
     id: 5,
     title: `Kane an inspiration for Spurs' squad, says Mason`,
     newstitle: 'Real madrid Official',
-    teamIcon: IconPath.teamfour,
+    teamIcon: ImagePath.secondnews,
     time: '1 hour ago',
+
+    descriptionfirst:
+      'Manchester United are reportedly extremely close to completing the signing of Darwin Nunez.',
+    descriptionsecond:
+      'The 22-year-old Benfica striker has been in superb form this season, scoring 34 goals for the Portuguese outfit. His goal against Ajax in the Champions League will certainly have made an impression on newly-appointed United manager Erik ten Hag.',
+    descriptionthird: `According to Give Me Sport journalist Dean Jones, a deal for Nunez would set United back £50.6m with Benfica having reportedly lined up Stuttgart's Sasa Kalajdzic as a replacement. Other reports have suggested that Benfica would be looking to cash in on the Uruguayan in order to fund their summer transfer window. Atletico Madrid are believed to be the only club likely to challenge United for Nunez.`,
   },
 ];
