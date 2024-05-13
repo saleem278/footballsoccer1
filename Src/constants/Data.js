@@ -77,6 +77,7 @@ export const newsData = [
     descriptionthird: `According to Give Me Sport journalist Dean Jones, a deal for Nunez would set United back £50.6m with Benfica having reportedly lined up Stuttgart's Sasa Kalajdzic as a replacement. Other reports have suggested that Benfica would be looking to cash in on the Uruguayan in order to fund their summer transfer window. Atletico Madrid are believed to be the only club likely to challenge United for Nunez.`,
     teamIcon: ImagePath.firstnews,
     time: '7 hours ago',
+    icon: IconPath.teamfirst,
   },
   {
     id: 2,
@@ -89,6 +90,7 @@ export const newsData = [
     descriptionsecond:
       'The 22-year-old Benfica striker has been in superb form this season, scoring 34 goals for the Portuguese outfit. His goal against Ajax in the Champions League will certainly have made an impression on newly-appointed United manager Erik ten Hag.',
     descriptionthird: `According to Give Me Sport journalist Dean Jones, a deal for Nunez would set United back £50.6m with Benfica having reportedly lined up Stuttgart's Sasa Kalajdzic as a replacement. Other reports have suggested that Benfica would be looking to cash in on the Uruguayan in order to fund their summer transfer window. Atletico Madrid are believed to be the only club likely to challenge United for Nunez.`,
+    icon: IconPath.teamsecond,
   },
   {
     id: 3,
@@ -102,6 +104,7 @@ export const newsData = [
     descriptionsecond:
       'The 22-year-old Benfica striker has been in superb form this season, scoring 34 goals for the Portuguese outfit. His goal against Ajax in the Champions League will certainly have made an impression on newly-appointed United manager Erik ten Hag.',
     descriptionthird: `According to Give Me Sport journalist Dean Jones, a deal for Nunez would set United back £50.6m with Benfica having reportedly lined up Stuttgart's Sasa Kalajdzic as a replacement. Other reports have suggested that Benfica would be looking to cash in on the Uruguayan in order to fund their summer transfer window. Atletico Madrid are believed to be the only club likely to challenge United for Nunez.`,
+    icon: IconPath.teamthird,
   },
   {
     id: 4,
@@ -115,6 +118,7 @@ export const newsData = [
     descriptionsecond:
       'The 22-year-old Benfica striker has been in superb form this season, scoring 34 goals for the Portuguese outfit. His goal against Ajax in the Champions League will certainly have made an impression on newly-appointed United manager Erik ten Hag.',
     descriptionthird: `According to Give Me Sport journalist Dean Jones, a deal for Nunez would set United back £50.6m with Benfica having reportedly lined up Stuttgart's Sasa Kalajdzic as a replacement. Other reports have suggested that Benfica would be looking to cash in on the Uruguayan in order to fund their summer transfer window. Atletico Madrid are believed to be the only club likely to challenge United for Nunez.`,
+    icon: IconPath.teamfour,
   },
   {
     id: 5,
@@ -128,5 +132,6 @@ export const newsData = [
     descriptionsecond:
       'The 22-year-old Benfica striker has been in superb form this season, scoring 34 goals for the Portuguese outfit. His goal against Ajax in the Champions League will certainly have made an impression on newly-appointed United manager Erik ten Hag.',
     descriptionthird: `According to Give Me Sport journalist Dean Jones, a deal for Nunez would set United back £50.6m with Benfica having reportedly lined up Stuttgart's Sasa Kalajdzic as a replacement. Other reports have suggested that Benfica would be looking to cash in on the Uruguayan in order to fund their summer transfer window. Atletico Madrid are believed to be the only club likely to challenge United for Nunez.`,
+    icon: IconPath.teamfirst,
   },
 ];

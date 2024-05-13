@@ -1,10 +1,10 @@
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Home from '../screens/BottomTab/HomeTab/Home';
 import Matches from '../screens/BottomTab/MatchesTab/Matches';
-import Result from '../screens/BottomTab/ResultTab/Result';
-import News from '../screens/BottomTab/ResultTab/Result';
 import {Image, StyleSheet, View} from 'react-native';
 import {IconPath} from '../assets';
+import Result from '../screens/BottomTab/ResultTab/Result';
+import News from '../screens/BottomTab/NewsTab/News';
 
 const Tab = createBottomTabNavigator();
 

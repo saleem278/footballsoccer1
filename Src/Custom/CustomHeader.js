@@ -8,7 +8,7 @@ import {
   StatusBar,
   Image,
 } from 'react-native';
-import { fonts } from '../assets';
+import {fonts} from '../assets';
 
 const CustomHeader = ({title, iconSource, onPress, scrollY, showIcon}) => {
   const headerBackgroundColor = scrollY.interpolate({
@@ -19,7 +19,13 @@ const CustomHeader = ({title, iconSource, onPress, scrollY, showIcon}) => {
 
   return (
     <Animated.View
-      style={[styles.header, {backgroundColor: headerBackgroundColor}]}>
+      style={[
+        styles.header,
+        {
+          backgroundColor: headerBackgroundColor,
+          justifyContent: showIcon ? 'space-between' : 'center',
+        },
+      ]}>
       <StatusBar backgroundColor={headerBackgroundColor} />
       <Text style={styles.title}>{title}</Text>
       {showIcon && (
@@ -52,11 +58,10 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 22,
-    fontWeight:'700',
-    color:'#181829',
-    fontFamily:fonts.spaceGrotesk,
-    lineHeight:30
-
+    fontWeight: '700',
+    color: '#181829',
+    fontFamily: fonts.spaceGrotesk,
+    lineHeight: 30,
   },
 });
 

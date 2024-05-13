@@ -7,7 +7,9 @@ export const IconPath = {
   teamsecond: require('../assets/Icons/teamsecond.png'),
   teamthird: require('../assets/Icons/teamthird.png'),
   teamfour: require('../assets/Icons/teamfour.png'),
-  notification:require('../assets/Icons/Notification.png')
+  notification:require('../assets/Icons/Notification.png'),
+  calender:require('../assets/Icons/calender.png'),
+
 };
 
 

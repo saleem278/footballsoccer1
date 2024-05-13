@@ -2,23 +2,20 @@ import React, {useRef, useEffect} from 'react';
 import {
   StyleSheet,
   View,
-  ScrollView,
   Animated,
   FlatList,
   StatusBar,
   Text,
   Image,
 } from 'react-native';
-import {HomeData, newsData} from '../../../constants/Data';
-import HomeItem from '../../../Custom/HomeItem';
+import {newsData} from '../../../constants/Data';
 import CustomHeader from '../../../Custom/CustomHeader';
 import {IconPath, fonts} from '../../../assets';
 
-const Home = () => {
+const News = () => {
   const scrollY = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
-    // Update StatusBar background color and style based on scroll position
     const listenerId = scrollY.addListener(({value}) => {
       const backgroundColor = value > 50 ? '#edf5ff' : 'white';
       StatusBar.setBackgroundColor(backgroundColor, true);
@@ -116,8 +113,8 @@ const Home = () => {
   return (
     <View style={styles.container}>
       <CustomHeader
-        title="1010Soccer"
-        showIcon={true}
+        title="News"
+        showIcon={false}
         iconSource={IconPath.notification}
         onPress={() => {}}
         scrollY={scrollY}
@@ -129,13 +126,6 @@ const Home = () => {
           {useNativeDriver: false},
         )}
         scrollEventThrottle={16}>
-        <FlatList
-          data={HomeData}
-          style={{width: '95%', alignSelf: 'center'}}
-          renderItem={({item}) => <HomeItem item={item} />}
-        />
-        <View style={styles.emptyView}></View>
-        <Text style={styles.Topnews}>Top News</Text>
         <FlatList
           data={newsData}
           renderItem={renderItem}
@@ -211,4 +201,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Home;
+export default News;
