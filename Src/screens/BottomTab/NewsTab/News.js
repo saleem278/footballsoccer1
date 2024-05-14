@@ -7,10 +7,12 @@ import {
   StatusBar,
   Text,
   Image,
+  TouchableOpacity,
 } from 'react-native';
 import {newsData} from '../../../constants/Data';
 import CustomHeader from '../../../Custom/CustomHeader';
 import {IconPath, fonts} from '../../../assets';
+import {useNavigation} from '@react-navigation/native';
 
 const News = () => {
   const scrollY = useRef(new Animated.Value(0)).current;
@@ -27,10 +29,18 @@ const News = () => {
     };
   }, [scrollY]);
 
+  const navigation = useNavigation();
+
   const renderItem = ({item, index}) => {
     if (index === 0) {
       return (
-        <View
+        <TouchableOpacity
+          onPress={() =>
+            navigation.navigate('SingleNews', {
+              item: item,
+            })
+          }
+          activeOpacity={0.9}
           style={[
             styles.newsItem,
             {
@@ -67,11 +77,17 @@ const News = () => {
               <Text style={styles.newsTime}>{item.time}</Text>
             </View>
           </View>
-        </View>
+        </TouchableOpacity>
       );
     } else {
       return (
-        <View
+        <TouchableOpacity
+          activeOpacity={0.9}
+          onPress={() =>
+            navigation.navigate('SingleNews', {
+              item: item,
+            })
+          }
           style={[
             styles.newsItem,
             {
@@ -105,7 +121,7 @@ const News = () => {
               <Text style={styles.newsTime}>{item.time}</Text>
             </View>
           </View>
-        </View>
+        </TouchableOpacity>
       );
     }
   };

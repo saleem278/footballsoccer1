@@ -1,11 +1,14 @@
 import React from 'react';
 import {View, Text, TouchableOpacity, Image, StyleSheet} from 'react-native';
 import {fonts} from '../assets';
+import {useNavigation} from '@react-navigation/native';
 
 const HomeItem = ({item}) => {
+  const navigation = useNavigation();
   return (
     <TouchableOpacity
       activeOpacity={0.8}
+      onPress={() => navigation.navigate('SingleMatch', {item: item})}
       style={[
         styles.itemContainer,
         {backgroundColor: item.status === 'Live' ? '#1029AA' : '#ED1645'},
