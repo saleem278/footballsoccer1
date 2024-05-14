@@ -10,6 +10,10 @@ export const IconPath = {
   notification: require('../assets/Icons/Notification.png'),
   calender: require('../assets/Icons/calender.png'),
   goback: require('../assets/Icons/goback.png'),
+  shareIcon: require('../assets/Icons/shareIcon.png'),
+  arrowupdown: require('../assets/Icons/arrowupdown.png'),
+  fouCard: require('../assets/Icons/FouCard.png'),
+  bx_football: require('../assets/Icons/bx_football.png'),
 };
 
 export const fonts = {
@@ -24,5 +28,5 @@ export const fonts = {
 export const ImagePath = {
   firstnews: require('../assets/Images/newsfirst.png'),
   secondnews: require('../assets/Images/newssecond.png'),
-  England: require('../assets/Images/England.png'),
+  userProfile: require('../assets/Images/userProfile.png'),
 };

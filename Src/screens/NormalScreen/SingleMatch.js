@@ -1,56 +1,67 @@
 import React from 'react';
 import {View, Text, TouchableOpacity, Image, StyleSheet} from 'react-native';
-import {fonts} from '../../assets';
+import {IconPath, fonts} from '../../assets';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
 import Event from '../TopTab/Event';
 import Live from '../TopTab/Live';
 import Lineup from '../TopTab/Lineup';
 import Stats from '../TopTab/Stats';
 import {getFocusedRouteNameFromRoute} from '@react-navigation/native';
+import ThemeHeader from '../../Custom/ThemeHeader';
 
-const SingleMatch = ({route}) => {
+const SingleMatch = ({route, navigation}) => {
   const item = route?.params.item;
   const Tab = createMaterialTopTabNavigator();
   const routeName = getFocusedRouteNameFromRoute(route);
 
   return (
     <View style={{flex: 1}}>
-      <View style={[styles.itemContainer, {backgroundColor: '#181829'}]}>
-        <View style={styles.teamContainer}>
-          <Image source={item.imageFirstTeam} style={styles.teamImage} />
-          <Text style={styles.teamName}>{item.firstTeam}</Text>
-        </View>
-        <View
-          style={[
-            styles.vsContainer,
-            {
-              height: 160,
-            },
-          ]}>
-          <Text style={styles.score}>{'Full Time'}</Text>
-          <View
-            style={{
-              width: '70%',
-              alignItems: 'center',
-              justifyContent: 'space-around',
-              flexDirection: 'row',
-            }}>
-            <Text style={styles.vs}>{item?.scoreFirstTeam}</Text>
-            <Text style={styles.vs}>-</Text>
-            <Text style={styles.vs}>{item?.scoreSecondTam}</Text>
+      <ThemeHeader
+        title="Matches"
+        showIcon={true}
+        iconSource={IconPath.goback}
+        onBackPress={() => navigation?.goBack()}
+      />
+      <View style={{backgroundColor: '#181829'}}>
+        <Text style={styles.score}>{'Full Time'}</Text>
+        <View style={[styles.itemContainer]}>
+          <View style={styles.teamContainer}>
+            <Image source={item.imageSecondTeam} style={styles.teamImage} />
+            <Text style={styles.teamName}>{item.secondTeam}</Text>
           </View>
-          {item?.status === 'Live' ? (
-            <Text style={styles.degree}>{item.degree}'</Text>
-          ) : (
-            <View style={styles.timeContainer}>
-              <Text style={styles.time}>{item.time}</Text>
-              <Text style={styles.day}>{item.day}</Text>
+          <View
+            style={[
+              styles.vsContainer,
+              {
+                // padding:20
+                height: 135,
+                // paddingVertical:10
+              },
+            ]}>
+            <View
+              style={{
+                width: '70%',
+                alignItems: 'center',
+                justifyContent: 'space-around',
+                flexDirection: 'row',
+              }}>
+              <Text style={styles.vs}>{item?.scoreFirstTeam}</Text>
+              <Text style={styles.vs}>-</Text>
+              <Text style={styles.vs}>{item?.scoreSecondTam}</Text>
             </View>
-          )}
-        </View>
-        <View style={styles.teamContainer}>
-          <Image source={item.imageSecondTeam} style={styles.teamImage} />
-          <Text style={styles.teamName}>{item.secondTeam}</Text>
+            {item?.status === 'Live' ? (
+              <Text style={styles.degree}>{item.degree}'</Text>
+            ) : (
+              <View style={styles.timeContainer}>
+                <Text style={styles.time}>{item.time}</Text>
+                <Text style={styles.day}>{item.day}</Text>
+              </View>
+            )}
+          </View>
+          <View style={styles.teamContainer}>
+            <Image source={item.imageFirstTeam} style={styles.teamImage} />
+            <Text style={styles.teamName}>{item.firstTeam}</Text>
+          </View>
         </View>
       </View>
       <Tab.Navigator
@@ -148,32 +159,35 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    padding: 15,
-    // marginBottom: 15,
     width: '100%',
-    // height: 200,
+    paddingVertical: 15,
   },
   teamContainer: {
     alignItems: 'center',
     width: '35%',
+    paddingVertical: 10,
   },
   teamImage: {
-    width: 50,
-    height: 50,
-    borderRadius: 25,
-    marginBottom: 5,
+    width: 48,
+    height: 48,
+    // borderRadius: 25,
+    marginBottom: 20,
   },
   teamName: {
     color: '#FFF',
-    fontSize: 12,
+    fontSize: 14,
     fontWeight: '600',
     fontFamily: fonts.medium,
+    lineHeight:18,
+    marginBottom:16
   },
   score: {
     color: '#FFF',
     fontSize: 10,
     fontWeight: '600',
     fontFamily: fonts.medium,
+    textAlign: 'center',
+    lineHeight:12
   },
   vsContainer: {
     alignItems: 'center',
@@ -192,6 +206,8 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: '700',
     fontFamily: fonts.medium,
+    marginBottom:8,
+  
   },
   timeContainer: {
     alignItems: 'center',
@@ -208,12 +224,6 @@ const styles = StyleSheet.create({
     fontFamily: fonts.medium,
     fontWeight: '600',
   },
-  teamImage: {
-    width: 90,
-    height: 90,
-    resizeMode: 'contain',
-    marginBottom: 5,
-  },
   liveContainer: {
     position: 'absolute',
     backgroundColor: '#ED1645',
@@ -227,13 +237,6 @@ const styles = StyleSheet.create({
     fontFamily: fonts.medium,
     fontWeight: '600',
     color: 'white',
-  },
-  itemContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    padding: 15,
-    width: '100%',
   },
   tabBar: {
     flexDirection: 'row',

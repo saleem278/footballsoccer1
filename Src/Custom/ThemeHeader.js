@@ -8,39 +8,67 @@ import {
   StatusBar,
   Image,
 } from 'react-native';
-import {fonts} from '../assets';
+import {IconPath, fonts} from '../assets';
 
-const ThemeHeader = ({title, iconSource, onPress, scrollY, showIcon}) => {
-  const headerBackgroundColor = scrollY.interpolate({
-    inputRange: [0, 50],
-    outputRange: ['white', '#edf5ff'],
-    extrapolate: 'clamp',
-  });
-
+const ThemeHeader = ({
+  title,
+  iconSource,
+  onBackPress,
+  onNotifyPress,
+  onShareIcon,
+  navigation
+}) => {
   return (
     <Animated.View
       style={[
         styles.header,
         {
-          backgroundColor: headerBackgroundColor,
-          justifyContent: showIcon ? 'space-between' : 'center',
+          backgroundColor: '#181829',
+          justifyContent: 'space-between',
         },
       ]}>
-      <StatusBar backgroundColor={headerBackgroundColor} />
+      <StatusBar backgroundColor={'#181829'} />
+      <TouchableOpacity onPress={onBackPress}>
+        <Image
+          style={{
+            height: 24,
+            width: 24,
+            resizeMode: 'contain',
+            tintColor: '#fff',
+          }}
+          source={iconSource}
+        />
+      </TouchableOpacity>
       <Text style={styles.title}>{title}</Text>
-      {showIcon && (
-        <TouchableOpacity onPress={onPress}>
+      <View
+        style={{
+          flexDirection: 'row',
+          alignItems: 'center',
+        }}>
+        <TouchableOpacity onPress={onNotifyPress}>
           <Image
             style={{
               height: 24,
               width: 24,
               resizeMode: 'contain',
-              tintColor: '#200E32',
+              tintColor: '#fff',
+              marginRight: 20,
             }}
-            source={iconSource}
+            source={IconPath.notification}
           />
         </TouchableOpacity>
-      )}
+        <TouchableOpacity onPress={onShareIcon}>
+          <Image
+            style={{
+              height: 22,
+              width: 22,
+              resizeMode: 'contain',
+              tintColor: '#fff',
+            }}
+            source={IconPath.shareIcon}
+          />
+        </TouchableOpacity>
+      </View>
     </Animated.View>
   );
 };
@@ -50,10 +78,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingHorizontal: 10,
-    height: 70,
-    borderBottomWidth: 1,
-    borderBottomColor: '#F6F5F5',
+    paddingHorizontal: 20,
+    height: 50,
     zIndex: 1,
   },
   title: {
