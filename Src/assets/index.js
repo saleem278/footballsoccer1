@@ -24,4 +24,5 @@ export const fonts = {
 export const ImagePath = {
   firstnews: require('../assets/Images/newsfirst.png'),
   secondnews: require('../assets/Images/newssecond.png'),
+  England: require('../assets/Images/England.png'),
 };

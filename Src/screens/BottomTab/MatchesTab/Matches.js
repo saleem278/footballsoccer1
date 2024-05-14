@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import {newsData} from '../../../constants/Data';
 import CustomHeader from '../../../Custom/CustomHeader';
-import {IconPath, fonts} from '../../../assets';
+import {IconPath, ImagePath, fonts} from '../../../assets';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 
 const Matches = () => {
@@ -62,7 +62,7 @@ const Matches = () => {
             },
           ]}>
           <Image
-            source={item.teamIcon}
+            source={ImagePath.England}
             style={[
               styles.newsImage,
               {
@@ -71,23 +71,7 @@ const Matches = () => {
               },
             ]}
           />
-          <View style={styles.newsContent}>
-            <Text style={styles.newsTitle}>{item.title}</Text>
-            <View
-              style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-              }}>
-              <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                <Image
-                  style={{width: 13, height: 13, resizeMode: 'contain'}}
-                  source={item?.icon}></Image>
-                <Text style={styles.newsSubtitle}>{item.newstitle}</Text>
-              </View>
-              <Text style={styles.newsTime}>{item.time}</Text>
-            </View>
-          </View>
+        
         </View>
       );
     } else {
