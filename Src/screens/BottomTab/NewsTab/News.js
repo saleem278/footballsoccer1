@@ -68,13 +68,26 @@ const News = () => {
                 alignItems: 'center',
                 justifyContent: 'space-between',
               }}>
-              <View style={{flexDirection: 'row', alignItems: 'center'}}>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  width: '70%',
+                }}>
                 <Image
                   style={{width: 13, height: 13, resizeMode: 'contain'}}
                   source={item?.icon}></Image>
-                <Text style={styles.newsSubtitle}>{item.newstitle}</Text>
+                <Text style={[styles.newsSubtitle]}>{item.newstitle}</Text>
               </View>
-              <Text style={styles.newsTime}>{item.time}</Text>
+              <Text
+                style={[
+                  styles.newsTime,
+                  {
+                    fontSize: 12,
+                  },
+                ]}>
+                {item.time}
+              </Text>
             </View>
           </View>
         </TouchableOpacity>
@@ -112,7 +125,12 @@ const News = () => {
                 alignItems: 'center',
                 justifyContent: 'space-between',
               }}>
-              <View style={{flexDirection: 'row', alignItems: 'center'}}>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  width: '65%',
+                }}>
                 <Image
                   style={{width: 13, height: 13, resizeMode: 'contain'}}
                   source={item?.icon}></Image>
@@ -213,7 +231,7 @@ const styles = StyleSheet.create({
     color: '#938E8E',
     fontWeight: '600',
     fontFamily: fonts.medium,
-    fontSize: 12,
+    fontSize: 10,
   },
 });
 

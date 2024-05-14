@@ -9,10 +9,11 @@ import {
   Image,
   TouchableOpacity,
 } from 'react-native';
-import {newsData} from '../../../constants/Data';
+import {newsData, resultData} from '../../../constants/Data';
 import CustomHeader from '../../../Custom/CustomHeader';
 import {IconPath, fonts} from '../../../assets';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
+import MatchItem from '../../../Custom/MatchItem';
 
 const Matches = () => {
   const scrollY = useRef(new Animated.Value(0)).current;
@@ -46,89 +47,6 @@ const Matches = () => {
   const handleConfirmDate = date => {
     setSelectedDate(date);
     handleCloseDatePicker();
-  };
-
-  const renderItem = ({item, index}) => {
-    if (index === 0) {
-      return (
-        <View
-          style={[
-            styles.newsItem,
-            {
-              height: 280,
-              width: '95%',
-              alignSelf: 'center',
-              flexDirection: 'column',
-            },
-          ]}>
-          <Image
-            source={item.teamIcon}
-            style={[
-              styles.newsImage,
-              {
-                width: '100%',
-                height: 200,
-              },
-            ]}
-          />
-          <View style={styles.newsContent}>
-            <Text style={styles.newsTitle}>{item.title}</Text>
-            <View
-              style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-              }}>
-              <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                <Image
-                  style={{width: 13, height: 13, resizeMode: 'contain'}}
-                  source={item?.icon}></Image>
-                <Text style={styles.newsSubtitle}>{item.newstitle}</Text>
-              </View>
-              <Text style={styles.newsTime}>{item.time}</Text>
-            </View>
-          </View>
-        </View>
-      );
-    } else {
-      return (
-        <View
-          style={[
-            styles.newsItem,
-            {
-              marginBottom: 10,
-              marginTop: 10,
-            },
-          ]}>
-          <Image
-            source={item.teamIcon}
-            style={[
-              styles.newsImage,
-              {
-                width: 110,
-              },
-            ]}
-          />
-          <View style={styles.newsContent}>
-            <Text style={styles.newsTitle}>{item.title}</Text>
-            <View
-              style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-              }}>
-              <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                <Image
-                  style={{width: 13, height: 13, resizeMode: 'contain'}}
-                  source={item?.icon}></Image>
-                <Text style={styles.newsSubtitle}>{item.newstitle}</Text>
-              </View>
-              <Text style={styles.newsTime}>{item.time}</Text>
-            </View>
-          </View>
-        </View>
-      );
-    }
   };
 
   const calendarData = [1, 2, 3, 4, 5, 6];
@@ -172,6 +90,9 @@ const Matches = () => {
         <FlatList
           data={newData}
           horizontal
+          style={{
+            marginTop:10
+          }}
           showsHorizontalScrollIndicator={false}
           renderItem={({item, index}) => (
             <View style={{flex: 1}}>
@@ -227,8 +148,64 @@ const Matches = () => {
           // keyExtractor={item => item.id.toString()}
         />
         <FlatList
-          data={newsData}
-          renderItem={renderItem}
+          data={resultData}
+          style={{marginBottom:10}}
+          renderItem={({item}) => (
+            <View
+              style={{
+                backgroundColor: 'white',
+                width: '95%',
+                alignSelf: 'center',
+                marginTop: 10,
+                borderRadius: 4,
+                elevation: 2,
+              }}>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  padding: 12,
+                  borderBottomWidth: 1,
+                  borderColor: '#ddd',
+                }}>
+                <Image
+                  style={{
+                    width: 25,
+                    height: 25,
+                    resizeMode: 'contain',
+                  }}
+                  source={item?.icon}></Image>
+                <View
+                  style={{
+                    marginLeft: 8,
+                  }}>
+                  <Text
+                    style={{
+                      color: '#23262D',
+                      fontWeight: '700',
+                      fontSize: 12,
+                      fontFamily: fonts.medium,
+                    }}>
+                    {item.titleplayer}
+                  </Text>
+                  <Text
+                    style={{
+                      color: '#979797',
+                      fontWeight: '500',
+                      fontSize: 12,
+                      fontFamily: fonts.medium,
+                    }}>
+                    {item.teamname}
+                  </Text>
+                </View>
+              </View>
+              <FlatList
+                data={item.data}
+                renderItem={({item}) => <MatchItem match={item} />}
+                keyExtractor={(item, index) => index.toString()}
+              />
+            </View>
+          )}
           keyExtractor={item => item.id.toString()}
         />
       </Animated.ScrollView>
@@ -248,7 +225,7 @@ const Matches = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#FAFAFA',
   },
   scrollView: {
     flex: 1,
@@ -326,7 +303,7 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     padding: 10,
     height: 70,
-    width: 55,
+    width: 60,
     elevation: 1,
     justifyContent: 'center',
     alignItems: 'center',
