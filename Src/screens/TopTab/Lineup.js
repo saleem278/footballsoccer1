@@ -1,6 +1,7 @@
 import {
   FlatList,
   Image,
+  ScrollView,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -56,207 +57,30 @@ const Lineup = () => {
         </TouchableOpacity>
       </View>
       {selectedTab === true ? (
-        <FlatList
-          data={[1, 2, 3]}
-          renderItem={({item, index}) => {
-            return (
-              <View>
-                {index === 0 && <Text>jsfhdfjdsfkd</Text>}
-                <Text>Cityyyyys</Text>
-                <Text>Cityyyyys</Text>
-                <Text>Cityyyyys</Text>
-                <Text>Cityyyyys</Text>
-                <Text>Cityyyyys</Text>
-              </View>
-            );
-          }}
-        />
-      ) : (
-        <View
+        <ScrollView
+          showsVerticalScrollIndicator={false}
           style={{
             flex: 1,
           }}>
-          <FlatList
-            data={secondTabSecondListData}
-            showsHorizontalScrollIndicator={false}
-            nestedScrollEnabled
-            renderItem={({item, index}) => {
-              return (
-                <View>
-                  {index === 0 && (
-                    <View
-                      style={{
-                        backgroundColor: '#023474',
-                        borderTopLeftRadius: 6,
-                        borderTopRightRadius: 6,
-                        paddingVertical: 15,
-                        paddingHorizontal: 10,
-                        alignItems: 'center',
-                        flexDirection: 'row',
-                        justifyContent: 'space-between',
-                      }}>
-                      <View
-                        style={{
-                          alignItems: 'center',
-                          flexDirection: 'row',
-                        }}>
-                        <Image
-                          style={{
-                            width: 20,
-                            height: 20,
-                            resizeMode: 'center',
-                          }}
-                          source={IconPath.teamthird}
-                        />
-                        <Text
-                          style={{
-                            color: '#FFFFFF',
-                            fontSize: 14,
-                            fontFamily: fonts.bold,
-                            fontWeight: '600',
-                            lineHeight: 18,
-                            marginLeft: 5,
-                          }}>
-                          Arsenal
-                        </Text>
-                      </View>
-
-                      <View
-                        style={{
-                          alignItems: 'center',
-                          flexDirection: 'row',
-                        }}>
-                        <Text style={styles._subText}>4</Text>
-                        <Text style={[styles._subText, {}]}>-</Text>
-                        <Text style={styles._subText}>2</Text>
-                        <Text style={[styles._subText, {}]}>-</Text>
-                        <Text style={styles._subText}>3</Text>
-                        <Text style={[styles._subText, {}]}>-</Text>
-                        <Text style={styles._subText}>1</Text>
-                      </View>
-                    </View>
-                  )}
+          <View
+            style={{
+              borderWidth: 1,
+              borderRadius: 6,
+              borderColor: '#F3F3F3',
+            }}>
+            <FlatList
+              data={secondTabSecondListData}
+              showsVerticalScrollIndicator={false}
+              nestedScrollEnabled
+              renderItem={({item, index}) => {
+                return (
                   <View
                     style={{
-                      paddingVertical: 15,
-                      paddingHorizontal: 10,
-                      alignItems: 'center',
-                      flexDirection: 'row',
-                      justifyContent: 'space-between',
                       borderBottomWidth: 1,
                       borderBottomColor: '#F3F3F3',
                     }}>
-                    <View
-                      style={{
-                        alignItems: 'center',
-                        flexDirection: 'row',
-                      }}>
-                      <Image
-                        style={{
-                          width: 30,
-                          height: 30,
-                          resizeMode: 'center',
-                        }}
-                        source={ImagePath.userProfile}
-                      />
-                      <Text
-                        style={{
-                          color: '#939598E5',
-                          fontSize: 12,
-                          fontFamily: fonts.bold,
-                          fontWeight: '600',
-                          lineHeight: 16,
-                          paddingHorizontal: 10,
-                        }}>
-                        35.
-                      </Text>
-                      <Text
-                        style={{
-                          color: '#181829',
-                          fontSize: 14,
-                          fontFamily: fonts.bold,
-                          fontWeight: '600',
-                          lineHeight: 18,
-                        }}>
-                        B. White
-                      </Text>
-                    </View>
-
-                    <View
-                      style={{
-                        alignItems: 'center',
-                        flexDirection: 'row',
-                      }}>
-                      <Text
-                        style={{
-                          color: '#181829',
-                          fontSize: 14,
-                          fontFamily: fonts.bold,
-                          fontWeight: '600',
-                          lineHeight: 18,
-                        }}>
-                        65'
-                      </Text>
-                      <Image
-                        style={{
-                          width: 25,
-                          height: 25,
-                          resizeMode: 'center',
-                          marginRight: 20,
-                          marginLeft: 5,
-                        }}
-                        source={IconPath.arrowupdown}
-                      />
-                      <TouchableOpacity
-                        style={{
-                          width: 25,
-                          // padding: 5,
-                          borderRadius: 25,
-                          borderWidth: 2,
-                          borderColor: '#067C27',
-                          backgroundColor: '#2FA450',
-                          height: 15,
-                          justifyContent: 'center',
-                          alignItems: 'center',
-                        }}>
-                        <Text
-                          style={{
-                            color: '#fff',
-                            fontSize: 10,
-                            fontFamily: fonts.bold,
-                            fontWeight: '500',
-                            lineHeight: 12,
-                          }}>
-                          6.8
-                        </Text>
-                      </TouchableOpacity>
-                    </View>
-                  </View>
-                </View>
-              );
-            }}
-          />
-
-          <View style={{flex: 1}}>
-            <FlatList
-              nestedScrollEnabled
-              data={secondTabSecondListData}
-              showsHorizontalScrollIndicator={false}
-              renderItem={({item, index}) => {
-                return (
-                  <View>
                     {index === 0 && (
-                      <View
-                        style={{
-                          backgroundColor: 'red',
-                          borderTopLeftRadius: 6,
-                          borderTopRightRadius: 6,
-                          paddingVertical: 15,
-                          paddingHorizontal: 10,
-                          alignItems: 'center',
-                          flexDirection: 'row',
-                          justifyContent: 'space-between',
-                        }}>
+                      <View style={styles._renderItemHeader}>
                         <View
                           style={{
                             alignItems: 'center',
@@ -268,7 +92,7 @@ const Lineup = () => {
                               height: 20,
                               resizeMode: 'center',
                             }}
-                            source={IconPath.teamthird}
+                            source={IconPath.teamfour}
                           />
                           <Text
                             style={{
@@ -279,7 +103,7 @@ const Lineup = () => {
                               lineHeight: 18,
                               marginLeft: 5,
                             }}>
-                            Arsenal
+                            Manchaster City
                           </Text>
                         </View>
 
@@ -305,8 +129,8 @@ const Lineup = () => {
                         alignItems: 'center',
                         flexDirection: 'row',
                         justifyContent: 'space-between',
-                        borderBottomWidth: 1,
-                        borderBottomColor: '#F3F3F3',
+                        // borderBottomWidth: 1,
+                        // borderBottomColor: '#F3F3F3',
                       }}>
                       <View
                         style={{
@@ -399,7 +223,393 @@ const Lineup = () => {
               }}
             />
           </View>
-        </View>
+
+          <View
+            style={{
+              flex: 1,
+              marginTop: 20,
+              borderWidth: 1,
+              borderRadius: 6,
+              borderColor: '#F3F3F3',
+              marginBottom: 30,
+            }}>
+            <FlatList
+              nestedScrollEnabled
+              data={secondTabSecondListData}
+              showsHorizontalScrollIndicator={false}
+              showsVerticalScrollIndicator={false}
+              renderItem={({item, index}) => {
+                return (
+                  <View
+                    style={{
+                      borderRadius: 6,
+                    }}>
+                    {index === 0 && (
+                      <View
+                        style={[
+                          styles._renderItemHeader,
+                          {backgroundColor: '#F1F1F1'},
+                        ]}>
+                        <View
+                          style={{
+                            alignItems: 'center',
+                            flexDirection: 'row',
+                          }}>
+                          <Text
+                            style={{
+                              color: '#181829',
+                              fontSize: 14,
+                              fontFamily: fonts.bold,
+                              fontWeight: '700',
+                              lineHeight: 18,
+                              marginLeft: 5,
+                            }}>
+                            SUBSTITUTIONS
+                          </Text>
+                        </View>
+                      </View>
+                    )}
+                    <View
+                      style={{
+                        paddingVertical: 15,
+                        paddingHorizontal: 10,
+                        alignItems: 'center',
+                        flexDirection: 'row',
+                        borderBottomWidth: 1,
+                        borderBottomColor: '#F3F3F3',
+                      }}>
+                      <View
+                        style={{
+                          alignItems: 'center',
+                          flexDirection: 'row',
+                        }}>
+                        <Text
+                          style={{
+                            color: '#181829',
+                            fontSize: 14,
+                            fontFamily: fonts.bold,
+                            fontWeight: '600',
+                            lineHeight: 18,
+                          }}>
+                          78'
+                        </Text>
+                        <Image
+                          style={{
+                            width: 25,
+                            height: 25,
+                            resizeMode: 'center',
+                            marginRight: 20,
+                            marginLeft: 5,
+                          }}
+                          source={IconPath.arrowupdown}
+                        />
+                      </View>
+                      <View>
+                        <Text
+                          style={{
+                            color: '#181829',
+                            fontSize: 14,
+                            fontFamily: fonts.bold,
+                            fontWeight: '600',
+                            lineHeight: 18,
+                          }}>
+                          Allen Saint-Maximin
+                        </Text>
+                        <Text
+                          style={{
+                            color: '#939598',
+                            fontSize: 12,
+                            fontFamily: fonts.bold,
+                            fontWeight: '500',
+                            lineHeight: 18,
+                          }}>
+                          Joe Willock
+                        </Text>
+                      </View>
+                    </View>
+                  </View>
+                );
+              }}
+            />
+          </View>
+        </ScrollView>
+      ) : (
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          style={{
+            flex: 1,
+          }}>
+          <View
+            style={{
+              borderWidth: 1,
+              borderRadius: 6,
+              borderColor: '#F3F3F3',
+            }}>
+            <FlatList
+              data={secondTabSecondListData}
+              showsVerticalScrollIndicator={false}
+              nestedScrollEnabled
+              renderItem={({item, index}) => {
+                return (
+                  <View
+                    style={{
+                      borderBottomWidth: 1,
+                      borderBottomColor: '#F3F3F3',
+                    }}>
+                    {index === 0 && (
+                      <View style={styles._renderItemHeader}>
+                        <View
+                          style={{
+                            alignItems: 'center',
+                            flexDirection: 'row',
+                          }}>
+                          <Image
+                            style={{
+                              width: 20,
+                              height: 20,
+                              resizeMode: 'center',
+                            }}
+                            source={IconPath.teamthird}
+                          />
+                          <Text
+                            style={{
+                              color: '#FFFFFF',
+                              fontSize: 14,
+                              fontFamily: fonts.bold,
+                              fontWeight: '600',
+                              lineHeight: 18,
+                              marginLeft: 5,
+                            }}>
+                            Arsenal
+                          </Text>
+                        </View>
+
+                        <View
+                          style={{
+                            alignItems: 'center',
+                            flexDirection: 'row',
+                          }}>
+                          <Text style={styles._subText}>4</Text>
+                          <Text style={[styles._subText, {}]}>-</Text>
+                          <Text style={styles._subText}>2</Text>
+                          <Text style={[styles._subText, {}]}>-</Text>
+                          <Text style={styles._subText}>3</Text>
+                          <Text style={[styles._subText, {}]}>-</Text>
+                          <Text style={styles._subText}>1</Text>
+                        </View>
+                      </View>
+                    )}
+                    <View
+                      style={{
+                        paddingVertical: 15,
+                        paddingHorizontal: 10,
+                        alignItems: 'center',
+                        flexDirection: 'row',
+                        justifyContent: 'space-between',
+                        // borderBottomWidth: 1,
+                        // borderBottomColor: '#F3F3F3',
+                      }}>
+                      <View
+                        style={{
+                          alignItems: 'center',
+                          flexDirection: 'row',
+                        }}>
+                        <Image
+                          style={{
+                            width: 30,
+                            height: 30,
+                            resizeMode: 'center',
+                          }}
+                          source={ImagePath.userProfile}
+                        />
+                        <Text
+                          style={{
+                            color: '#939598E5',
+                            fontSize: 12,
+                            fontFamily: fonts.bold,
+                            fontWeight: '600',
+                            lineHeight: 16,
+                            paddingHorizontal: 10,
+                          }}>
+                          35.
+                        </Text>
+                        <Text
+                          style={{
+                            color: '#181829',
+                            fontSize: 14,
+                            fontFamily: fonts.bold,
+                            fontWeight: '600',
+                            lineHeight: 18,
+                          }}>
+                          B. White
+                        </Text>
+                      </View>
+
+                      <View
+                        style={{
+                          alignItems: 'center',
+                          flexDirection: 'row',
+                        }}>
+                        <Text
+                          style={{
+                            color: '#181829',
+                            fontSize: 14,
+                            fontFamily: fonts.bold,
+                            fontWeight: '600',
+                            lineHeight: 18,
+                          }}>
+                          65'
+                        </Text>
+                        <Image
+                          style={{
+                            width: 25,
+                            height: 25,
+                            resizeMode: 'center',
+                            marginRight: 20,
+                            marginLeft: 5,
+                          }}
+                          source={IconPath.arrowupdown}
+                        />
+                        <TouchableOpacity
+                          style={{
+                            width: 25,
+                            // padding: 5,
+                            borderRadius: 25,
+                            borderWidth: 2,
+                            borderColor: '#067C27',
+                            backgroundColor: '#2FA450',
+                            height: 15,
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                          }}>
+                          <Text
+                            style={{
+                              color: '#fff',
+                              fontSize: 10,
+                              fontFamily: fonts.bold,
+                              fontWeight: '500',
+                              lineHeight: 12,
+                            }}>
+                            6.8
+                          </Text>
+                        </TouchableOpacity>
+                      </View>
+                    </View>
+                  </View>
+                );
+              }}
+            />
+          </View>
+
+          <View
+            style={{
+              flex: 1,
+              marginTop: 20,
+              borderWidth: 1,
+              borderRadius: 6,
+              borderColor: '#F3F3F3',
+              marginBottom: 30,
+            }}>
+            <FlatList
+              nestedScrollEnabled
+              data={secondTabSecondListData}
+              showsHorizontalScrollIndicator={false}
+              showsVerticalScrollIndicator={false}
+              renderItem={({item, index}) => {
+                return (
+                  <View
+                    style={{
+                      borderRadius: 6,
+                    }}>
+                    {index === 0 && (
+                      <View
+                        style={[
+                          styles._renderItemHeader,
+                          {backgroundColor: '#F1F1F1'},
+                        ]}>
+                        <View
+                          style={{
+                            alignItems: 'center',
+                            flexDirection: 'row',
+                          }}>
+                          <Text
+                            style={{
+                              color: '#181829',
+                              fontSize: 14,
+                              fontFamily: fonts.bold,
+                              fontWeight: '700',
+                              lineHeight: 18,
+                              marginLeft: 5,
+                            }}>
+                            SUBSTITUTIONS
+                          </Text>
+                        </View>
+                      </View>
+                    )}
+                    <View
+                      style={{
+                        paddingVertical: 15,
+                        paddingHorizontal: 10,
+                        alignItems: 'center',
+                        flexDirection: 'row',
+                        borderBottomWidth: 1,
+                        borderBottomColor: '#F3F3F3',
+                      }}>
+                      <View
+                        style={{
+                          alignItems: 'center',
+                          flexDirection: 'row',
+                        }}>
+                        <Text
+                          style={{
+                            color: '#181829',
+                            fontSize: 14,
+                            fontFamily: fonts.bold,
+                            fontWeight: '600',
+                            lineHeight: 18,
+                          }}>
+                          78'
+                        </Text>
+                        <Image
+                          style={{
+                            width: 25,
+                            height: 25,
+                            resizeMode: 'center',
+                            marginRight: 20,
+                            marginLeft: 5,
+                          }}
+                          source={IconPath.arrowupdown}
+                        />
+                      </View>
+                      <View>
+                        <Text
+                          style={{
+                            color: '#181829',
+                            fontSize: 14,
+                            fontFamily: fonts.bold,
+                            fontWeight: '600',
+                            lineHeight: 18,
+                          }}>
+                          Allen Saint-Maximin
+                        </Text>
+                        <Text
+                          style={{
+                            color: '#939598',
+                            fontSize: 12,
+                            fontFamily: fonts.bold,
+                            fontWeight: '500',
+                            lineHeight: 18,
+                          }}>
+                          Joe Willock
+                        </Text>
+                      </View>
+                    </View>
+                  </View>
+                );
+              }}
+            />
+          </View>
+        </ScrollView>
       )}
     </View>
   );
@@ -438,5 +648,16 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     fontFamily: fonts.medium,
     lineHeight: 12,
+  },
+
+  _renderItemHeader: {
+    backgroundColor: '#023474',
+    borderTopLeftRadius: 6,
+    borderTopRightRadius: 6,
+    paddingVertical: 15,
+    paddingHorizontal: 10,
+    alignItems: 'center',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
   },
 });

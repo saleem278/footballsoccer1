@@ -16,6 +16,7 @@ import CustomHeader from '../../../Custom/CustomHeader';
 import {IconPath, fonts} from '../../../assets';
 import {useIsFocused, useNavigation} from '@react-navigation/native';
 import {LiveUrl} from '../../../backend/env';
+import ImageLoader from '../../../Custom/ImageLoader';
 
 const Home = () => {
   const navigation = useNavigation();
@@ -66,6 +67,7 @@ const Home = () => {
   }, [useFocused]);
   const renderItem = ({item, index}) => {
     console.log(item, 'item');
+    console.warn('-------item here --->>', item?.description);
     if (index === 0) {
       return (
         <TouchableOpacity
@@ -84,19 +86,16 @@ const Home = () => {
               flexDirection: 'column',
             },
           ]}>
-          {item?.image === '' ? (
-            <View style={{borderWidth: 1, width: '100%', height: 200}}>
-              <Image
-                source={IconPath?.info}
-                style={[
-                  styles.newsImage,
-                  {
-                    width: '100%',
-                    height: 200,
-                    borderWidth: 1,
-                  },
-                ]}
-              />
+          {item?.image ? (
+            <View
+              style={{
+                borderWidth: 2,
+                width: '100%',
+                height: 200,
+                borderColor: '#F6F6F6',
+                borderRadius: 15,
+              }}>
+              <ImageLoader source={{uri: item?.image}} />
             </View>
           ) : (
             <>
@@ -128,7 +127,8 @@ const Home = () => {
                 }}>
                 <Image
                   style={{width: 13, height: 13, resizeMode: 'contain'}}
-                  source={item?.icon}></Image>
+                  source={item?.icon}
+                />
                 <Text style={styles.newsSubtitle}>{item.newstitle}</Text>
               </View>
               <Text
@@ -160,15 +160,35 @@ const Home = () => {
               marginTop: 10,
             },
           ]}>
-          <Image
-            source={{uri: item?.image}}
-            style={[
-              styles.newsImage,
-              {
-                width: 110,
-              },
-            ]}
-          />
+          {item?.image ? (
+            <>
+              <View>
+                <ImageLoader
+                  source={{uri: item?.image}}
+                  imageStyle={[
+                    {
+                      width: 110,
+                      backgroundColor: 'red',
+                      borderWidth: 1,
+                    },
+                  ]}
+                />
+              </View>
+            </>
+          ) : (
+            <>
+              <Image
+                source={{uri: item?.image}}
+                style={[
+                  styles.newsImage,
+                  {
+                    width: 110,
+                  },
+                ]}
+              />
+            </>
+          )}
+
           <View style={styles.newsContent}>
             <Text style={styles.newsTitle}>{item.title}</Text>
             <View
@@ -232,6 +252,7 @@ const Home = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: '#fff',
   },
   scrollView: {
     flex: 1,

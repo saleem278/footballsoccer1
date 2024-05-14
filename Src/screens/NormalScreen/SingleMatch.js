@@ -13,6 +13,7 @@ const SingleMatch = ({route, navigation}) => {
   const item = route?.params.item;
   const Tab = createMaterialTopTabNavigator();
   const routeName = getFocusedRouteNameFromRoute(route);
+  console.log('---item------------------>>>>>>>>>>>', item);
 
   return (
     <View style={{flex: 1}}>
@@ -26,9 +27,13 @@ const SingleMatch = ({route, navigation}) => {
         <Text style={styles.score}>{'Full Time'}</Text>
         <View style={[styles.itemContainer]}>
           <View style={styles.teamContainer}>
-            <Image source={item.imageSecondTeam} style={styles.teamImage} />
-            <Text style={styles.teamName}>{item.secondTeam}</Text>
+            <Image
+              source={{uri: item.teamHomeBadge}}
+              style={styles.teamImage}
+            />
+            <Text style={styles.teamName}>{item.matchHometeamName}</Text>
           </View>
+
           <View
             style={[
               styles.vsContainer,
@@ -45,12 +50,12 @@ const SingleMatch = ({route, navigation}) => {
                 justifyContent: 'space-around',
                 flexDirection: 'row',
               }}>
-              <Text style={styles.vs}>{item?.scoreFirstTeam}</Text>
+              <Text style={styles.vs}>{item?.matchHometeamScore}</Text>
               <Text style={styles.vs}>-</Text>
-              <Text style={styles.vs}>{item?.scoreSecondTam}</Text>
+              <Text style={styles.vs}>{item?.matchAwayteamScore}</Text>
             </View>
-            {item?.status === 'Live' ? (
-              <Text style={styles.degree}>{item.degree}'</Text>
+            {item?.matchStatus ? (
+              <Text style={styles.degree}>{item?.matchStatus}'</Text>
             ) : (
               <View style={styles.timeContainer}>
                 <Text style={styles.time}>{item.time}</Text>
@@ -59,8 +64,11 @@ const SingleMatch = ({route, navigation}) => {
             )}
           </View>
           <View style={styles.teamContainer}>
-            <Image source={item.imageFirstTeam} style={styles.teamImage} />
-            <Text style={styles.teamName}>{item.firstTeam}</Text>
+            <Image
+              source={{uri: item.teamAwayBadge}}
+              style={styles.teamImage}
+            />
+            <Text style={styles.teamName}>{item.matchAwayteamName}</Text>
           </View>
         </View>
       </View>
@@ -172,14 +180,15 @@ const styles = StyleSheet.create({
     height: 48,
     // borderRadius: 25,
     marginBottom: 20,
+    resizeMode:'contain'
   },
   teamName: {
     color: '#FFF',
     fontSize: 14,
     fontWeight: '600',
     fontFamily: fonts.medium,
-    lineHeight:18,
-    marginBottom:16
+    lineHeight: 18,
+    marginBottom: 16,
   },
   score: {
     color: '#FFF',
@@ -187,7 +196,7 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     fontFamily: fonts.medium,
     textAlign: 'center',
-    lineHeight:12
+    lineHeight: 12,
   },
   vsContainer: {
     alignItems: 'center',
@@ -206,8 +215,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: '700',
     fontFamily: fonts.medium,
-    marginBottom:8,
-  
+    marginBottom: 8,
   },
   timeContainer: {
     alignItems: 'center',
