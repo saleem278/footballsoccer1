@@ -1,7 +1,14 @@
 import React from 'react';
-import {StyleSheet, Text, View, Image, TouchableOpacity, ScrollView} from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  TouchableOpacity,
+  ScrollView,
+} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
-import {IconPath} from '../../assets';
+import {IconPath, fonts} from '../../assets';
 
 const SingleNews = ({route}) => {
   const navigation = useNavigation();
@@ -19,10 +26,6 @@ const SingleNews = ({route}) => {
         <Text style={styles.title}>{item.title}</Text>
         <Text style={styles.subtitle}>{item.subtitle}</Text>
         <Image source={item.teamIcon} style={styles.newsImage} />
-        <View style={styles.info}>
-          <Image source={item.icon} style={styles.icon} />
-          <Text style={styles.newstitle}>{item.newstitle}</Text>
-        </View>
         <Text style={styles.description}>{item.descriptionfirst}</Text>
         <Text style={styles.description}>{item.descriptionsecond}</Text>
         <Text style={styles.description}>{item.descriptionthird}</Text>
@@ -40,7 +43,8 @@ const styles = StyleSheet.create({
   header: {
     flexDirection: 'row',
     alignItems: 'center',
-    // marginBottom: 20,
+    marginBottom: 20,
+    marginTop: 10,
   },
   backButton: {
     width: 30,
@@ -48,9 +52,10 @@ const styles = StyleSheet.create({
     marginRight: 10,
   },
   newsTitle: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    marginRight: 'auto',
+    fontSize: 16,
+    fontWeight: '700',
+    color: '#181829',
+    fontFamily: fonts.medium,
   },
   content: {
     flex: 1,
@@ -59,14 +64,21 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: 'bold',
     marginBottom: 10,
+    fontFamily: fonts.medium,
+    color: '#181829',
   },
   subtitle: {
-    fontSize: 16,
+    fontSize: 12,
+    color: '#979797',
+    fontWeight: '500',
+    fontFamily: fonts.medium,
     marginBottom: 10,
   },
   newsImage: {
-    height: 300,
-    marginBottom: 10,
+    height: 200,
+    width: '100%',
+    resizeMode: 'contain',
+    marginBottom: 15,
   },
   info: {
     flexDirection: 'row',
@@ -83,6 +95,10 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   description: {
+    fontSize: 12,
+    color: '#979797',
+    fontWeight: '500',
+    fontFamily: fonts.medium,
     marginBottom: 10,
   },
 });
