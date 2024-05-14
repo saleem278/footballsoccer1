@@ -5,17 +5,19 @@ import {useNavigation} from '@react-navigation/native';
 
 const HomeItem = ({item}) => {
   const navigation = useNavigation();
+  console.log(item, 'item');
   return (
     <TouchableOpacity
       activeOpacity={0.8}
       onPress={() => navigation.navigate('SingleMatch', {item: item})}
       style={[
         styles.itemContainer,
-        {backgroundColor: item.status === 'Live' ? '#1029AA' : '#ED1645'},
+        {backgroundColor: item.matchStatus ? '#1029AA' : '#ED1645'},
       ]}>
       <View style={styles.teamContainer}>
-        <Image source={item.imageFirstTeam} style={styles.teamImage} />
-        <Text style={styles.teamName}>{item.firstTeam}</Text>
+        
+        <Image source={{uri: item?.teamHomeBadge}} style={styles.teamImage} />
+        <Text style={styles.teamName}>{item.matchHometeamName}</Text>
       </View>
       <View
         style={[
@@ -32,12 +34,12 @@ const HomeItem = ({item}) => {
             justifyContent: 'space-around',
             flexDirection: 'row',
           }}>
-          <Text style={styles.vs}>{item?.scoreFirstTeam}</Text>
+          <Text style={styles.vs}>{item?.matchHometeamScore}</Text>
           <Text style={styles.vs}>-</Text>
-          <Text style={styles.vs}>{item?.scoreSecondTam}</Text>
+          <Text style={styles.vs}>{item?.matchAwayteamScore}</Text>
         </View>
-        {item?.status === 'Live' ? (
-          <Text style={styles.degree}>{item.degree}'</Text>
+        {item.matchStatus ? (
+          <Text style={styles.degree}>{item?.matchStatus}'</Text>
         ) : (
           <View style={styles.timeContainer}>
             <Text style={styles.time}>{item.time}</Text>
@@ -46,8 +48,8 @@ const HomeItem = ({item}) => {
         )}
       </View>
       <View style={styles.teamContainer}>
-        <Image source={item.imageSecondTeam} style={styles.teamImage} />
-        <Text style={styles.teamName}>{item.secondTeam}</Text>
+        <Image source={{uri: item?.teamAwayBadge}} style={styles.teamImage} />
+        <Text style={styles.teamName}>{item.matchAwayteamName}</Text>
       </View>
       {item?.status === 'Live' && (
         <View style={styles.liveContainer}>

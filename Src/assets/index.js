@@ -14,6 +14,7 @@ export const IconPath = {
   arrowupdown: require('../assets/Icons/arrowupdown.png'),
   fouCard: require('../assets/Icons/FouCard.png'),
   bx_football: require('../assets/Icons/bx_football.png'),
+  info: require('../assets/Icons/info.png'),
 };
 
 export const fonts = {
@@ -29,4 +30,17 @@ export const ImagePath = {
   firstnews: require('../assets/Images/newsfirst.png'),
   secondnews: require('../assets/Images/newssecond.png'),
   userProfile: require('../assets/Images/userProfile.png'),
+
+  resulticon: require('../assets/Images/resulticon.png'),
+  resulticonfirst: require('../assets/Images/resulticonfirst.png'),
+  resulticonsecond: require('../assets/Images/resulticonsecond.png'),
+  resulticonthird: require('../assets/Images/resulticonthird.png'),
+  resulticonfour: require('../assets/Images/resulticonfour.png'),
+  resulticonfive: require('../assets/Images/resulticonfive.png'),
+  resulticonsix: require('../assets/Images/resulticonsix.png'),
+  resulticonseven: require('../assets/Images/resulticonseven.png'),
+  resulticoneight: require('../assets/Images/resulticoneight.png'),
+  resulticonnine: require('../assets/Images/resulticonnine.png'),
+  resulticonten: require('../assets/Images/resulticonten.png'),
+  resulticoneleven: require('../assets/Images/resulticoneleven.png'),
 };
