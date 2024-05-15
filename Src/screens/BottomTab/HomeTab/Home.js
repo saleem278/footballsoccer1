@@ -9,6 +9,7 @@ import {
   Text,
   Image,
   TouchableOpacity,
+  ActivityIndicator,
 } from 'react-native';
 import {HomeData, newsData} from '../../../constants/Data';
 import HomeItem from '../../../Custom/HomeItem';
@@ -66,8 +67,6 @@ const Home = () => {
     ApiFetchData();
   }, [useFocused]);
   const renderItem = ({item, index}) => {
-    console.log(item, 'item');
-    console.warn('-------item here --->>', item?.description);
     if (index === 0) {
       return (
         <TouchableOpacity
@@ -86,40 +85,26 @@ const Home = () => {
               flexDirection: 'column',
             },
           ]}>
-          {item?.image ? (
-            <View
-              style={{
-                borderWidth: 2,
-                width: '100%',
-                height: 200,
-                borderColor: '#F6F6F6',
-                borderRadius: 15,
-              }}>
-              <ImageLoader source={{uri: item?.image}} />
-            </View>
-          ) : (
-            <>
-              <Image
-                source={{uri: item?.image}}
-                style={[
-                  styles.newsImage,
-                  {
-                    width: '100%',
-                    height: 200,
-                  },
-                ]}
-              />
-            </>
-          )}
+          <View
+            style={{
+              borderWidth: 2,
+              width: '100%',
+              height: 200,
+              borderColor: '#F6F6F6',
+              borderRadius: 15,
+            }}>
+            <ImageLoader source={{uri: item?.image}} />
+          </View>
+
           <View style={styles.newsContent}>
             <Text style={styles.newsTitle}>{item.title}</Text>
             <View
               style={{
                 flexDirection: 'row',
                 alignItems: 'center',
-                justifyContent: 'space-between',
+                justifyContent: 'flex-end',
               }}>
-              <View
+              {/* <View
                 style={{
                   flexDirection: 'row',
                   alignItems: 'center',
@@ -130,7 +115,7 @@ const Home = () => {
                   source={item?.icon}
                 />
                 <Text style={styles.newsSubtitle}>{item.newstitle}</Text>
-              </View>
+              </View> */}
               <Text
                 style={[
                   styles.newsTime,
@@ -155,39 +140,28 @@ const Home = () => {
           activeOpacity={0.9}
           style={[
             styles.newsItem,
+            // {F
+            //   marginBottom: 10,
+            //   marginTop: 10,
+            // },
             {
-              marginBottom: 10,
-              marginTop: 10,
+              paddingVertical: 10,
             },
           ]}>
-          {item?.image ? (
-            <>
-              <View>
-                <ImageLoader
-                  source={{uri: item?.image}}
-                  imageStyle={[
-                    {
-                      width: 110,
-                      backgroundColor: 'red',
-                      borderWidth: 1,
-                    },
-                  ]}
-                />
-              </View>
-            </>
-          ) : (
-            <>
-              <Image
-                source={{uri: item?.image}}
-                style={[
-                  styles.newsImage,
-                  {
-                    width: 110,
-                  },
-                ]}
-              />
-            </>
-          )}
+          <View
+            style={{
+              borderWidth: 2,
+              width: 80,
+              height: 80,
+              borderColor: '#F6F6F6',
+              marginRight: 10,
+              borderRadius: 15,
+            }}>
+            <ImageLoader
+              style={{width: 80, height: 80}}
+              source={{uri: item?.image}}
+            />
+          </View>
 
           <View style={styles.newsContent}>
             <Text style={styles.newsTitle}>{item.title}</Text>
@@ -195,9 +169,9 @@ const Home = () => {
               style={{
                 flexDirection: 'row',
                 alignItems: 'center',
-                justifyContent: 'space-between',
+                justifyContent: 'flex-end',
               }}>
-              <View
+              {/* <View
                 style={{
                   flexDirection: 'row',
                   alignItems: 'center',
@@ -207,7 +181,7 @@ const Home = () => {
                   style={{width: 13, height: 13, resizeMode: 'contain'}}
                   source={item?.icon}></Image>
                 <Text style={styles.newsSubtitle}>{item.description}</Text>
-              </View>
+              </View> */}
               <Text style={styles.newsTime}>{item?.formattedCreatedAt}</Text>
             </View>
           </View>
@@ -225,26 +199,41 @@ const Home = () => {
         onPress={() => {}}
         scrollY={scrollY}
       />
-      <Animated.ScrollView
-        style={styles.scrollView}
-        onScroll={Animated.event(
-          [{nativeEvent: {contentOffset: {y: scrollY}}}],
-          {useNativeDriver: false},
-        )}
-        scrollEventThrottle={16}>
-        <FlatList
-          data={dashBoardData}
-          style={{width: '95%', alignSelf: 'center'}}
-          renderItem={({item}) => <HomeItem item={item} loading={loading} />}
-        />
-        <View style={styles.emptyView}></View>
-        <Text style={styles.Topnews}>Top News</Text>
-        <FlatList
-          data={newsTopData}
-          renderItem={renderItem}
-          // keyExtractor={item => item.id.toString()}
-        />
-      </Animated.ScrollView>
+      {loading ? (
+        <ActivityIndicator
+          size={'large'}
+          color={'#ED1645'}
+          style={{
+            alignItems: 'center',
+            justifyContent: 'center',
+            position: 'absolute',
+            top:70,
+            bottom: 0,
+            right: 0,
+            left: 0,
+          }}></ActivityIndicator>
+      ) : (
+        <Animated.ScrollView
+          style={styles.scrollView}
+          onScroll={Animated.event(
+            [{nativeEvent: {contentOffset: {y: scrollY}}}],
+            {useNativeDriver: false},
+          )}
+          scrollEventThrottle={16}>
+          <FlatList
+            data={dashBoardData}
+            style={{width: '95%', alignSelf: 'center'}}
+            renderItem={({item}) => <HomeItem item={item} loading={loading} />}
+          />
+          <View style={styles.emptyView}></View>
+          <Text style={styles.Topnews}>Top News</Text>
+          <FlatList
+            data={newsTopData}
+            renderItem={renderItem}
+            // keyExtractor={item => item.id.toString()}
+          />
+        </Animated.ScrollView>
+      )}
     </View>
   );
 };

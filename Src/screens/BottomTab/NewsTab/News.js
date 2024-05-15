@@ -1,4 +1,4 @@
-import React, {useRef, useEffect} from 'react';
+import React, {useRef, useEffect, useState} from 'react';
 import {
   StyleSheet,
   View,
@@ -8,15 +8,21 @@ import {
   Text,
   Image,
   TouchableOpacity,
+  ActivityIndicator,
 } from 'react-native';
 import {newsData} from '../../../constants/Data';
 import CustomHeader from '../../../Custom/CustomHeader';
 import {IconPath, fonts} from '../../../assets';
-import {useNavigation} from '@react-navigation/native';
+import {useIsFocused, useNavigation} from '@react-navigation/native';
+import {LiveUrl} from '../../../backend/env';
+import ImageLoader from '../../../Custom/ImageLoader';
 
 const News = () => {
   const scrollY = useRef(new Animated.Value(0)).current;
-
+  const [newsData, setNewsData] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const navigation = useNavigation();
+  const focused = useIsFocused();
   useEffect(() => {
     const listenerId = scrollY.addListener(({value}) => {
       const backgroundColor = value > 50 ? '#edf5ff' : 'white';
@@ -29,7 +35,30 @@ const News = () => {
     };
   }, [scrollY]);
 
-  const navigation = useNavigation();
+  const fetchData = () => {
+    setLoading(true);
+    const requestOptions = {
+      method: 'GET',
+      redirect: 'follow',
+    };
+
+    fetch(LiveUrl + 'api/v1/posts?page=1?per_page=40', requestOptions)
+      .then(response => response.text())
+      .then(result => {
+        const parsedData = JSON.parse(result);
+        if (parsedData) {
+          setLoading(false);
+          setNewsData(parsedData.data);
+        } else {
+          setLoading(false);
+        }
+      })
+      .catch(error => console.error(error));
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, [focused]);
 
   const renderItem = ({item, index}) => {
     if (index === 0) {
@@ -50,25 +79,25 @@ const News = () => {
               flexDirection: 'column',
             },
           ]}>
-          <Image
-            source={item.teamIcon}
-            style={[
-              styles.newsImage,
-              {
-                width: '100%',
-                height: 200,
-              },
-            ]}
-          />
+          <View
+            style={{
+              borderWidth: 2,
+              width: '100%',
+              height: 200,
+              borderColor: '#F6F6F6',
+              borderRadius: 15,
+            }}>
+            <ImageLoader source={{uri: item?.image}} />
+          </View>
           <View style={styles.newsContent}>
             <Text style={styles.newsTitle}>{item.title}</Text>
             <View
               style={{
                 flexDirection: 'row',
                 alignItems: 'center',
-                justifyContent: 'space-between',
+                justifyContent: 'flex-end',
               }}>
-              <View
+              {/* <View
                 style={{
                   flexDirection: 'row',
                   alignItems: 'center',
@@ -78,7 +107,7 @@ const News = () => {
                   style={{width: 13, height: 13, resizeMode: 'contain'}}
                   source={item?.icon}></Image>
                 <Text style={[styles.newsSubtitle]}>{item.newstitle}</Text>
-              </View>
+              </View> */}
               <Text
                 style={[
                   styles.newsTime,
@@ -104,28 +133,32 @@ const News = () => {
           style={[
             styles.newsItem,
             {
-              marginBottom: 10,
-              marginTop: 10,
+              paddingVertical: 10,
             },
           ]}>
-          <Image
-            source={item.teamIcon}
-            style={[
-              styles.newsImage,
-              {
-                width: 110,
-              },
-            ]}
-          />
+          <View
+            style={{
+              borderWidth: 2,
+              width: 80,
+              height: 80,
+              borderColor: '#F6F6F6',
+              marginRight: 10,
+              borderRadius: 15,
+            }}>
+            <ImageLoader
+              style={{width: 80, height: 80}}
+              source={{uri: item?.image}}
+            />
+          </View>
           <View style={styles.newsContent}>
             <Text style={styles.newsTitle}>{item.title}</Text>
             <View
               style={{
                 flexDirection: 'row',
                 alignItems: 'center',
-                justifyContent: 'space-between',
+                justifyContent: 'flex-end',
               }}>
-              <View
+              {/* <View
                 style={{
                   flexDirection: 'row',
                   alignItems: 'center',
@@ -135,8 +168,8 @@ const News = () => {
                   style={{width: 13, height: 13, resizeMode: 'contain'}}
                   source={item?.icon}></Image>
                 <Text style={styles.newsSubtitle}>{item.newstitle}</Text>
-              </View>
-              <Text style={styles.newsTime}>{item.time}</Text>
+              </View> */}
+              <Text style={styles.newsTime}>{item.formattedCreatedAt}</Text>
             </View>
           </View>
         </TouchableOpacity>
@@ -153,19 +186,32 @@ const News = () => {
         onPress={() => {}}
         scrollY={scrollY}
       />
-      <Animated.ScrollView
-        style={styles.scrollView}
-        onScroll={Animated.event(
-          [{nativeEvent: {contentOffset: {y: scrollY}}}],
-          {useNativeDriver: false},
-        )}
-        scrollEventThrottle={16}>
-        <FlatList
-          data={newsData}
-          renderItem={renderItem}
-          keyExtractor={item => item.id.toString()}
-        />
-      </Animated.ScrollView>
+      {loading ? (
+        <ActivityIndicator
+          size={'large'}
+          color={'#ED1645'}
+          style={{
+            alignItems: 'center',
+            justifyContent: 'center',
+            position: 'absolute',
+            top: 70,
+            bottom: 0,
+            right: 0,
+            left: 0,
+          }}></ActivityIndicator>
+      ) : (
+        <>
+          <Animated.ScrollView
+            style={styles.scrollView}
+            onScroll={Animated.event(
+              [{nativeEvent: {contentOffset: {y: scrollY}}}],
+              {useNativeDriver: false},
+            )}
+            scrollEventThrottle={16}>
+            <FlatList data={newsData} renderItem={renderItem} />
+          </Animated.ScrollView>
+        </>
+      )}
     </View>
   );
 };

@@ -1,19 +1,20 @@
-
 import {ActivityIndicator, Image, View} from 'react-native';
 import React, {useState} from 'react';
+
+import {theme} from '../constants';
+import {IconPath} from '../assets';
 
 const ImageLoader = ({
   source,
   containerStyle,
   children,
-  imageStyle,
+  style,
   childrenStyle,
   activityIndicatorStyle,
 }) => {
   const [loading, setLoading] = useState(true);
 
-
-  const onloading = (value) => {
+  const onloading = value => {
     setLoading(value);
   };
 
@@ -29,30 +30,32 @@ const ImageLoader = ({
 
   const renderActivityIndicator = () => {
     return (
-      <ActivityIndicator
-        size='small'
-        color={'red'}
+      <View
         style={{
-          zIndex: 1,
+          zIndex: 0,
           opacity: 1,
           justifyContent: 'center',
           alignItems: 'center',
-          backgroundColor: '#EBF2FC',
+          backgroundColor: '#F4F9FF',
           ...styles.absolute,
           ...activityIndicatorStyle,
-        }}
-      />
+        }}>
+        <Image
+          style={{width: 30, height: 30, resizeMode: 'contain'}}
+          source={IconPath.info}
+        />
+      </View>
     );
   };
 
   return (
     <View style={{...containerStyle}}>
-      {loading && renderActivityIndicator()}
+      {loading || !source.uri ? renderActivityIndicator() : null}
       <Image
         style={{
           height: '100%',
           width: '100%',
-          ...imageStyle,
+          ...style,
         }}
         source={source}
         onLoadStart={() => onloading(true)}
@@ -62,8 +65,7 @@ const ImageLoader = ({
         style={{
           ...styles.absolute,
           ...childrenStyle,
-        }}
-      >
+        }}>
         {children}
       </View>
     </View>

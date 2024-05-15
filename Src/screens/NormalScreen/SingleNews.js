@@ -9,6 +9,8 @@ import {
 } from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import {IconPath, fonts} from '../../assets';
+import ImageLoader from '../../Custom/ImageLoader';
+import RenderHTML from 'react-native-render-html';
 
 const SingleNews = ({route}) => {
   const navigation = useNavigation();
@@ -24,11 +26,16 @@ const SingleNews = ({route}) => {
       </View>
       <View style={styles.content}>
         <Text style={styles.title}>{item.title}</Text>
-        <Text style={styles.subtitle}>{item.subtitle}</Text>
-        <Image source={item.teamIcon} style={styles.newsImage} />
-        <Text style={styles.description}>{item.descriptionfirst}</Text>
-        <Text style={styles.description}>{item.descriptionsecond}</Text>
-        <Text style={styles.description}>{item.descriptionthird}</Text>
+        <Text style={styles.subtitle}>{item.excerpt}</Text>
+        <ImageLoader source={{uri: item.image}} style={styles.newsImage} />
+        <RenderHTML
+          // style={styles.description}
+          
+          baseStyle={styles.description}
+          source={{html: item.description}}
+        />
+        {/* <Text style={styles.description}>{item.descriptionsecond}</Text>
+        <Text style={styles.description}>{item.descriptionthird}</Text> */}
       </View>
     </ScrollView>
   );
@@ -99,7 +106,7 @@ const styles = StyleSheet.create({
     color: '#979797',
     fontWeight: '500',
     fontFamily: fonts.medium,
-    marginBottom: 10,
+    marginBottom: 30,
   },
 });
 

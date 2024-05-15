@@ -14,17 +14,28 @@ import CustomHeader from '../../../Custom/CustomHeader';
 import {IconPath, fonts} from '../../../assets';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import MatchItem from '../../../Custom/MatchItem';
+import {LiveUrl} from '../../../backend/env';
 
 const Result = () => {
   const scrollY = useRef(new Animated.Value(0)).current;
-  const [activeDay, setActiveDay] = useState('');
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
-  const [selectedDate, setSelectedDate] = useState(new Date()); // Initialize with current date
+  const [selectedDate, setSelectedDate] = useState(null);
+  const [pagenumber, setPageNumber] = useState(1);
+  console.log(pagenumber, 'page');
+  const [resultItems, setResultItems] = useState([]);
+  const [isFetchingData, setIsFetchingData] = useState(false);
+
+  console.log(resultItems, 'result');
 
   useEffect(() => {
     const listenerId = scrollY.addListener(({value}) => {
       const backgroundColor = value > 50 ? '#edf5ff' : 'white';
-      StatusBar?.setBackgroundColor(backgroundColor, true);
+      StatusBar?.setBackgroundColor(
+        backgroundColor && typeof backgroundColor === 'string'
+          ? backgroundColor
+          : 'white',
+        true,
+      );
       StatusBar?.setBarStyle(
         value > 50 ? 'dark-content' : 'dark-content',
         true,
@@ -48,13 +59,14 @@ const Result = () => {
     setSelectedDate(date);
     handleCloseDatePicker();
   };
-
+  const handleLoadMore = () => {
+    setPageNumber(prevPage => prevPage + 1); // Increment page number when end of list is reached
+  };
   const calendarData = [1, 2, 3, 4, 5, 6];
 
-  const currentDate = new Date(); // Get the current date
-  const currentDay = currentDate.getDay(); // Get the day of the week (0 for Sunday, 1 for Monday, ..., 6 for Saturday)
+  const currentDate = new Date();
+  const currentDay = currentDate.getDay();
 
-  // Array to map numerical representation of day to its short name
   const dayShortNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
   function getNextNDaysData(n) {
@@ -71,10 +83,38 @@ const Result = () => {
   const newData = getNextNDaysData(calendarData.length);
 
   console.log(newData);
+
+  const withoutDatePagination = pageNumber => {
+    const requestOptions = {
+      method: 'GET',
+      redirect: 'follow',
+    };
+
+    fetch(LiveUrl + `api/v1/eventsresult?page=${pageNumber}`, requestOptions)
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.json();
+      })
+      .then(data => {
+        if (!Array.isArray(data.data)) {
+          throw new Error('Received data is not an array');
+        }
+        setResultItems(prevItems => [...prevItems, ...data.data]);
+      })
+      .catch(error => console.error(error));
+  };
+
+  useEffect(() => {
+    console.log('==================================>', pagenumber);
+    withoutDatePagination(pagenumber);
+  }, [pagenumber]);
+
   return (
     <View style={styles.container}>
       <CustomHeader
-        title="Matches"
+        title="Result"
         showIcon={true}
         iconSource={null}
         onPress={() => {}}
@@ -91,7 +131,7 @@ const Result = () => {
           data={newData}
           horizontal
           style={{
-            marginTop:10
+            marginTop: 10,
           }}
           showsHorizontalScrollIndicator={false}
           renderItem={({item, index}) => (
@@ -107,27 +147,23 @@ const Result = () => {
                 </TouchableOpacity>
               ) : (
                 <TouchableOpacity
-                  onPress={() =>
-                    setSelectedDate(
-                      new Date(
-                        selectedDate.getFullYear(),
-                        selectedDate.getMonth(),
-                        item.date,
-                      ),
-                    )
-                  }
+                  onPress={() => {
+                    const newSelectedDate = new Date();
+                    newSelectedDate.setDate(item.date);
+                    setSelectedDate(newSelectedDate);
+                  }}
                   style={[
                     styles.activeindexView,
                     {
                       backgroundColor:
-                        selectedDate.getDate() === item.date
+                        selectedDate && selectedDate.getDate() === item.date
                           ? '#246BFD'
                           : '#F1F1F1',
                     },
                   ]}>
                   <Text
                     style={[
-                      selectedDate.getDate() === item?.date
+                      selectedDate && selectedDate.getDate() === item.date
                         ? styles.dateText
                         : styles.dayText,
                     ]}>
@@ -135,7 +171,7 @@ const Result = () => {
                   </Text>
                   <Text
                     style={[
-                      selectedDate.getDate() === item?.date
+                      selectedDate && selectedDate.getDate() === item.date
                         ? styles.dateText
                         : styles.dayText,
                     ]}>
@@ -149,7 +185,9 @@ const Result = () => {
         />
         <FlatList
           data={resultData}
-          style={{marginBottom:10}}
+          onEndReached={handleLoadMore} 
+          onEndReachedThreshold={0.1}
+          style={{marginBottom: 10}}
           renderItem={({item}) => (
             <View
               style={{

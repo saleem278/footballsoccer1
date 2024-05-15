@@ -2,6 +2,7 @@ import React from 'react';
 import {View, Text, TouchableOpacity, Image, StyleSheet} from 'react-native';
 import {fonts} from '../assets';
 import {useNavigation} from '@react-navigation/native';
+import ImageLoader from './ImageLoader';
 
 const HomeItem = ({item}) => {
   const navigation = useNavigation();
@@ -12,11 +13,13 @@ const HomeItem = ({item}) => {
       onPress={() => navigation.navigate('SingleMatch', {item: item})}
       style={[
         styles.itemContainer,
-        {backgroundColor: item.matchStatus ? '#1029AA' : '#ED1645'},
+        {backgroundColor: !item.match_live ? '#1029AA' : '#ED1645'},
       ]}>
       <View style={styles.teamContainer}>
-        
-        <Image source={{uri: item?.teamHomeBadge}} style={styles.teamImage} />
+        <ImageLoader
+          source={{uri: item?.teamHomeBadge}}
+          style={styles.teamImage}
+        />
         <Text style={styles.teamName}>{item.matchHometeamName}</Text>
       </View>
       <View
@@ -39,7 +42,7 @@ const HomeItem = ({item}) => {
           <Text style={styles.vs}>{item?.matchAwayteamScore}</Text>
         </View>
         {item.matchStatus ? (
-          <Text style={styles.degree}>{item?.matchStatus}'</Text>
+          <Text style={styles.degree}>{item?.matchStatus}</Text>
         ) : (
           <View style={styles.timeContainer}>
             <Text style={styles.time}>{item.time}</Text>
@@ -48,7 +51,10 @@ const HomeItem = ({item}) => {
         )}
       </View>
       <View style={styles.teamContainer}>
-        <Image source={{uri: item?.teamAwayBadge}} style={styles.teamImage} />
+        <ImageLoader
+          source={{uri: item?.teamAwayBadge}}
+          style={styles.teamImage}
+        />
         <Text style={styles.teamName}>{item.matchAwayteamName}</Text>
       </View>
       {item?.status === 'Live' && (
