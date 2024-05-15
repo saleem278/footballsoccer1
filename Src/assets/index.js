@@ -10,11 +10,11 @@ export const IconPath = {
   notification: require('../assets/Icons/Notification.png'),
   calender: require('../assets/Icons/calender.png'),
   goback: require('../assets/Icons/goback.png'),
-  shareIcon: require('../assets/Icons/shareIcon.png'),
-  arrowupdown: require('../assets/Icons/arrowupdown.png'),
-  fouCard: require('../assets/Icons/FouCard.png'),
-  bx_football: require('../assets/Icons/bx_football.png'),
   info: require('../assets/Icons/info.png'),
+
+  yellowcard: require('../assets/Icons/yellowcard.png'),
+  redcard: require('../assets/Icons/redcard.png'),
+  arrowupdown:require('../assets/Icons/arrowupdown.png')
 };
 
 export const fonts = {
@@ -29,7 +29,6 @@ export const fonts = {
 export const ImagePath = {
   firstnews: require('../assets/Images/newsfirst.png'),
   secondnews: require('../assets/Images/newssecond.png'),
-  userProfile: require('../assets/Images/userProfile.png'),
 
   resulticon: require('../assets/Images/resulticon.png'),
   resulticonfirst: require('../assets/Images/resulticonfirst.png'),
@@ -43,4 +42,9 @@ export const ImagePath = {
   resulticonnine: require('../assets/Images/resulticonnine.png'),
   resulticonten: require('../assets/Images/resulticonten.png'),
   resulticoneleven: require('../assets/Images/resulticoneleven.png'),
+
+  liveimagefirst:require('../assets/Images/liveimagefirst.png'),
+  liveimagesecond:require('../assets/Images/liveimagesecond.png'),
+  liveimagethird:require('../assets/Images/liveimagethird.png'),
 };
+
