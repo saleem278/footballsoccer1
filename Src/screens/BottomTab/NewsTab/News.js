@@ -46,6 +46,7 @@ const News = () => {
       .then(response => response.text())
       .then(result => {
         const parsedData = JSON.parse(result);
+        console.log("asdfsadf",parsedData)
         if (parsedData) {
           setLoading(false);
           setNewsData(parsedData.data);
@@ -53,7 +54,10 @@ const News = () => {
           setLoading(false);
         }
       })
-      .catch(error => console.error(error));
+      .catch(error => {
+        setLoading(false);
+        console.error(error);
+      });
   };
 
   useEffect(() => {

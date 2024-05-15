@@ -15,7 +15,6 @@ const MatchItem = ({match}) => {
     day,
     teamdegree,
   } = match;
-  console.log(match);
 
   return (
     <View style={styles.container}>

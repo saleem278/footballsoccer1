@@ -37,7 +37,6 @@ const Event = ({route}) => {
         data={matchEventData}
         style={{marginBottom: 10}}
         renderItem={({item}) => (
-          console.log('-=======================->?>>>>>>,', item),
           ( */}
       <View
         style={{

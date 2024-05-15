@@ -51,7 +51,6 @@ const Home = () => {
       .then(response => response.text())
       .then(result => {
         const parseData = JSON.parse(result);
-        console.log(parseData, 'papapa========ffffffF============papapap');
         if (parseData.status === true) {
           setLoading(false);
           setDashBoardData(parseData.data.liveScore);

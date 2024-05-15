@@ -70,7 +70,6 @@ const Matches = () => {
 
   const newData = getNextNDaysData(calendarData.length);
 
-  console.log(newData);
   return (
     <View style={styles.container}>
       <CustomHeader

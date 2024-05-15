@@ -21,11 +21,9 @@ const Result = () => {
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [selectedDate, setSelectedDate] = useState(null);
   const [pagenumber, setPageNumber] = useState(1);
-  console.log(pagenumber, 'page');
   const [resultItems, setResultItems] = useState([]);
   const [isFetchingData, setIsFetchingData] = useState(false);
 
-  console.log(resultItems, 'result');
 
   useEffect(() => {
     const listenerId = scrollY.addListener(({value}) => {
@@ -82,7 +80,6 @@ const Result = () => {
 
   const newData = getNextNDaysData(calendarData.length);
 
-  console.log(newData);
 
   const withoutDatePagination = pageNumber => {
     const requestOptions = {
@@ -107,7 +104,6 @@ const Result = () => {
   };
 
   useEffect(() => {
-    console.log('==================================>', pagenumber);
     withoutDatePagination(pagenumber);
   }, [pagenumber]);
 

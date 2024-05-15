@@ -24,7 +24,6 @@ const Lineup = ({route}) => {
   const [awaysubstitutions, setAwaySubstitutions] = useState([]);
   const [secondTabSecondListData, setSecondTabSecondListData] = useState([]);
 
-  console.log('---11homeTeam----->>>', homeTeam?.match_hometeam_name);
   const ApiFetchData = async () => {
     const requestOptions = {
       method: 'GET',
@@ -294,7 +293,6 @@ const Lineup = ({route}) => {
               showsHorizontalScrollIndicator={false}
               showsVerticalScrollIndicator={false}
               renderItem={({item, index}) => {
-                console.log('-----substitutes ---->>>', item);
                 return (
                   <View
                     style={{

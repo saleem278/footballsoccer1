@@ -13,7 +13,6 @@ const SingleMatch = ({route, navigation}) => {
   const item = route?.params.item;
   const Tab = createMaterialTopTabNavigator();
   const routeName = getFocusedRouteNameFromRoute(route);
-  console.log('---item---hshhshhshsh------asd--------->>>>>>>>>>>', item);
 
   return (
     <View style={{flex: 1}}>

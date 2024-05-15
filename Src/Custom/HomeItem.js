@@ -6,7 +6,6 @@ import ImageLoader from './ImageLoader';
 
 const HomeItem = ({item}) => {
   const navigation = useNavigation();
-  console.log(item, 'item');
   return (
     <TouchableOpacity
       activeOpacity={0.8}
