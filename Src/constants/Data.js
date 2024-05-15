@@ -262,3 +262,74 @@ export const resultData = [
     ],
   },
 ];
+
+export const LiveData = [
+  {
+    id: 1,
+    score: 'FT',
+    scorename: 'FULL-TIME : NEWCASTLE UNITED 1-1 ARSENAL',
+  },
+  {
+    id: 2,
+    score: `68'`,
+    scorename: 'MANCHESTER CITY',
+    subscorename: 'R.Holding',
+    description:
+      'Arsenal showed their mettle and came through a devilishly difficult fixture at Newcastle to keep the title race alive with a 2-0 win at St James’ Park.',
+    manIcon: ImagePath.liveimagefirst,
+    cardstatus: 'yellow',
+    cardicon: IconPath.yellowcard,
+  },
+  {
+    id: 3,
+    status: 'inOut',
+    score: `59'`,
+    scorename: 'I. Gundogan',
+    inplayer: 'Reiss Neison',
+    outplayer: 'Gabriel Jesus',
+    inplayerimage: ImagePath.liveimagesecond,
+    outplayerimage: ImagePath.liveimagethird,
+  },
+  {
+    id: 4,
+    score: `54'`,
+    scorename: 'MANCHESTER CITY',
+    subscorename: 'R.Holding',
+    description:
+      'Arsenal showed their mettle and came through a devilishly difficult fixture at Newcastle to keep the title race alive with a 2-0 win at St James’ Park.',
+    manIcon: ImagePath.liveimagesecond,
+    cardstatus: 'red',
+    cardicon: IconPath.redcard,
+  },
+  {
+    id: 5,
+    status: 'inOut',
+    score: `45'`,
+    scorename: 'I. Gundogan',
+    inplayer: 'Reiss Neison',
+    outplayer: 'Gabriel Jesus',
+    inplayerimage: ImagePath.liveimagesecond,
+    outplayerimage: ImagePath.liveimagethird,
+  },
+  {
+    id: 6,
+    score: `42'`,
+    scorename: 'MANCHESTER CITY',
+    subscorename: 'R.Holding',
+    description:
+      'Arsenal showed their mettle and came through a devilishly difficult fixture at Newcastle to keep the title race alive with a 2-0 win at St James’ Park.',
+    manIcon: ImagePath.liveimagesecond,
+    cardstatus: 'red',
+    cardicon: IconPath.redcard,
+  },
+  {
+    id: 7,
+    status: 'inOut',
+    score: `39'`,
+    scorename: 'I. Gundogan',
+    inplayer: 'Reiss Neison',
+    outplayer: 'Gabriel Jesus',
+    inplayerimage: ImagePath.liveimagesecond,
+    outplayerimage: ImagePath.liveimagethird,
+  },
+];
