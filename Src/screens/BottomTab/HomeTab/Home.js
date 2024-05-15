@@ -66,6 +66,8 @@ const Home = () => {
   useEffect(() => {
     ApiFetchData();
   }, [useFocused]);
+
+  
   const renderItem = ({item, index}) => {
     if (index === 0) {
       return (

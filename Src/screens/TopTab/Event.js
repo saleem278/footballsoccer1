@@ -1,12 +1,207 @@
 import {FlatList, Image, StyleSheet, Text, View} from 'react-native';
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {IconPath, fonts} from '../../assets';
+import {resultData} from '../../constants/Data';
+import MatchItem from '../../Custom/MatchItem';
+import {useIsFocused} from '@react-navigation/native';
+import {LiveUrl} from '../../backend/env';
 
-const Event = () => {
+const Event = ({route}) => {
+  const isFocused = useIsFocused();
+  const id = route?.params?.id;
+  const [matchEventData, setMatchEventData] = useState([]); 
+  const ApiFetchData = async () => {
+    const requestOptions = {
+      method: 'GET',
+      redirect: 'follow',
+    };
+
+    fetch(LiveUrl + 'api/v1/event/' + id, requestOptions)
+      .then(response => response.text())
+      .then(result => {
+        const parsedData = JSON.parse(result);
+        setMatchEventData(parsedData?.data);
+        
+      })
+      .catch(error => console.error(error));
+  };
+
+  useEffect(() => {
+    ApiFetchData();
+  }, [isFocused]);
+
   return (
     <View style={styles._Container}>
       <Text style={styles._matchEvent}>Match Event</Text>
-      <View style={styles._renderItemCard}>
+      {/* <FlatList
+        data={matchEventData}
+        style={{marginBottom: 10}}
+        renderItem={({item}) => (
+          console.log('-=======================->?>>>>>>,', item),
+          ( */}
+      <View
+        style={{
+          backgroundColor: 'white',
+          width: '95%',
+          alignSelf: 'center',
+          marginTop: 10,
+          borderRadius: 4,
+          elevation: 2,
+        }}>
+        <View
+          style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+            padding: 12,
+            borderBottomWidth: 1,
+            borderColor: '#ddd',
+          }}>
+          <Image
+            style={{
+              width: 25,
+              height: 25,
+              resizeMode: 'contain',
+            }}
+            source={{uri: matchEventData?.leagueLogo}}></Image>
+          <View
+            style={{
+              marginLeft: 8,
+            }}>
+            <Text
+              style={{
+                color: '#23262D',
+                fontWeight: '700',
+                fontSize: 12,
+                fontFamily: fonts.medium,
+              }}>
+              {matchEventData.leagueName}
+            </Text>
+            <Text
+              style={{
+                color: '#979797',
+                fontWeight: '500',
+                fontSize: 12,
+                fontFamily: fonts.medium,
+              }}>
+              {matchEventData.countryName}
+            </Text>
+          </View>
+        </View>
+        {/* -------------------------- */}
+        <View style={styles.container}>
+          <View
+            style={{
+              flexDirection: 'column',
+              alignItems: 'flex-start',
+            }}>
+            <View style={styles.teamColumn}>
+              <Image
+                source={{uri: matchEventData?.teamHomeBadge}}
+                style={styles.teamIcon}
+              />
+              <Text style={styles.teamName}>{matchEventData?.match_hometeam_name}</Text>
+            </View>
+            <View style={styles.teamColumn}>
+              <Image
+                source={{uri: matchEventData?.teamAwayBadge}}
+                style={styles.teamIcon}
+              />
+              <Text style={styles.teamName}>
+                {matchEventData?.match_awayteam_name}
+              </Text>
+            </View>
+          </View>
+          {matchEventData?.matchStatus && (
+            <View style={{position: 'absolute', top: 33, right: 40}}>
+              <Text style={[styles.degree]}>
+                {matchEventData?.matchStatus}'
+              </Text>
+            </View>
+          )}
+
+          <View style={{}}>
+            <Text
+              style={[
+                styles.matchDetails,
+                {
+                  color: matchEventData?.matchStatus ? '#246BFD' : '#181829',
+                },
+              ]}>{` ${matchEventData?.match_hometeam_score}`}</Text>
+            <Text
+              style={[
+                styles.matchDetails,
+                {
+                  color: matchEventData?.matchStatus ? '#246BFD' : '#181829',
+                },
+              ]}>{` ${matchEventData?.match_awayteam_score}`}</Text>
+          </View>
+        </View>
+        {/* <FlatList
+                data={item.data}
+                renderItem={({item}) => <MatchItem match={item} />}
+                keyExtractor={(item, index) => index.toString()}
+              /> */}
+      </View>
+
+      <View
+        style={{
+          backgroundColor: 'white',
+          width: '95%',
+          alignSelf: 'center',
+          marginTop: 10,
+          borderRadius: 4,
+          elevation: 2,
+          paddingVertical: 5,
+        }}>
+        <Text
+          style={[
+            styles._matchEvent,
+            {
+              marginTop: 10,
+              fontSize: 14,
+              paddingHorizontal: 10,
+            },
+          ]}>
+          Event Date/Time
+        </Text>
+        <View
+          style={{
+            borderBottomWidth: 1,
+            borderBottomColor: '#F1F1F1',
+            paddingVertical: 4,
+          }}
+        />
+        <View
+          style={{
+            flexDirection: 'column',
+            paddingHorizontal: 10,
+          }}>
+          <View
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              marginTop: 4,
+            }}>
+            <Text style={[styles.dayTime, {marginRight: 10}]}>Date:</Text>
+            <Text style={[styles.dayTime]}>{matchEventData?.matchDate}</Text>
+          </View>
+          <View
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+            }}>
+            <Text style={[styles.dayTime, {marginRight: 10}]}>Time:</Text>
+            <Text style={styles.dayTime}>{matchEventData?.matchTime}</Text>
+          </View>
+        </View>
+      </View>
+
+      {/* )
+        )}
+        keyExtractor={item => item.id.toString()}
+      /> */}
+
+      {/* <View style={styles._renderItemCard}>
         <FlatList
           data={[1]}
           renderItem={({item, index}) => {
@@ -444,7 +639,7 @@ const Event = () => {
             );
           }}
         />
-      </View>
+      </View> */}
     </View>
   );
 };
@@ -495,5 +690,59 @@ const styles = StyleSheet.create({
   _borderWidth: {
     borderBottomWidth: 1,
     borderBottomColor: '#F1F1F1',
+  },
+
+  container: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    borderBottomWidth: 1,
+    borderBottomColor: '#ddd',
+  },
+  teamColumn: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    padding: 5,
+    marginBottom: 5,
+    marginTop: 5,
+  },
+  teamIcon: {
+    width: 14,
+    height: 14,
+    resizeMode: 'contain',
+    fontFamily: fonts.medium,
+  },
+  teamName: {
+    color: '#181829',
+    fontSize: 12,
+    marginLeft: 12,
+    fontWeight: '500',
+  },
+  score: {
+    fontSize: 12,
+    fontWeight: '700',
+  },
+  degree: {
+    fontSize: 12,
+    color: '#246BFD',
+    fontWeight: '700',
+    fontFamily: fonts.medium,
+  },
+  matchDetails: {
+    fontSize: 12,
+    color: '#181829',
+    fontWeight: '700',
+    fontFamily: fonts.medium,
+    marginTop: 10,
+    marginBottom: 10,
+  },
+  dayTime: {
+    fontSize: 12,
+    color: '#868686',
+    fontWeight: '700',
+    fontFamily: fonts.medium,
   },
 });

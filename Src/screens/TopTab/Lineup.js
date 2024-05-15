@@ -7,13 +7,51 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {IconPath, ImagePath, fonts} from '../../assets';
+import {LiveUrl} from '../../backend/env';
+import {useIsFocused} from '@react-navigation/native';
 
-const Lineup = () => {
+const Lineup = ({route}) => {
+  const isFocused = useIsFocused();
+  const id = route?.params?.id;
+
   const [selectedTab, setSelectedTab] = useState(true);
-  const [secondTabFirstListData] = useState([1, 2, 3, 4, 5, 6]);
-  const [secondTabSecondListData] = useState([1, 2, 3, 4, 5, 6]);
+  const [secondTabFirstListData, setSecondTabFirstListData] = useState([]);
+  const [homeTeam, setHomeTeam] = useState({});
+
+  const [homesubstitutions, setHomeSubstitutions] = useState([]);
+  const [awaysubstitutions, setAwaySubstitutions] = useState([]);
+  const [secondTabSecondListData, setSecondTabSecondListData] = useState([]);
+
+  console.log('---11homeTeam----->>>', homeTeam?.match_hometeam_name);
+  const ApiFetchData = async () => {
+    const requestOptions = {
+      method: 'GET',
+      redirect: 'follow',
+    };
+
+    fetch(LiveUrl + 'api/v1/event/' + id, requestOptions)
+      .then(response => response.text())
+      .then(result => {
+        const parsedData = JSON.parse(result);
+        setSecondTabFirstListData(parsedData?.data?.home_team?.players);
+        setHomeTeam(parsedData?.data);
+        setHomeSubstitutions(
+          parsedData?.data?.substitutions?.filter(item => item.type == 'home'),
+        );
+        setAwaySubstitutions(
+          parsedData?.data?.substitutions?.filter(item => item.type == 'away'),
+        );
+
+        setSecondTabSecondListData(parsedData?.data?.away_team?.players);
+      })
+      .catch(error => console.error(error));
+  };
+
+  useEffect(() => {
+    ApiFetchData();
+  }, [isFocused]);
 
   return (
     <View style={styles._container}>
@@ -33,7 +71,7 @@ const Lineup = () => {
                 color: selectedTab !== false ? '#fff' : '#939598',
               },
             ]}>
-            Manchaster City
+            {homeTeam?.match_hometeam_name}
           </Text>
         </TouchableOpacity>
 
@@ -52,7 +90,7 @@ const Lineup = () => {
                 color: selectedTab == false ? '#fff' : '#939598',
               },
             ]}>
-            Arsenal
+            {homeTeam?.match_awayteam_name}
           </Text>
         </TouchableOpacity>
       </View>
@@ -69,7 +107,7 @@ const Lineup = () => {
               borderColor: '#F3F3F3',
             }}>
             <FlatList
-              data={secondTabSecondListData}
+              data={secondTabFirstListData}
               showsVerticalScrollIndicator={false}
               nestedScrollEnabled
               renderItem={({item, index}) => {
@@ -92,7 +130,7 @@ const Lineup = () => {
                               height: 20,
                               resizeMode: 'center',
                             }}
-                            source={IconPath.teamfour}
+                            source={{uri: homeTeam?.teamHomeBadge}}
                           />
                           <Text
                             style={{
@@ -103,11 +141,11 @@ const Lineup = () => {
                               lineHeight: 18,
                               marginLeft: 5,
                             }}>
-                            Manchaster City
+                            {homeTeam?.match_hometeam_name}
                           </Text>
                         </View>
 
-                        <View
+                        {/* <View
                           style={{
                             alignItems: 'center',
                             flexDirection: 'row',
@@ -119,7 +157,7 @@ const Lineup = () => {
                           <Text style={styles._subText}>3</Text>
                           <Text style={[styles._subText, {}]}>-</Text>
                           <Text style={styles._subText}>1</Text>
-                        </View>
+                        </View> */}
                       </View>
                     )}
                     <View
@@ -143,7 +181,7 @@ const Lineup = () => {
                             height: 30,
                             resizeMode: 'center',
                           }}
-                          source={ImagePath.userProfile}
+                          source={{uri: item?.image}}
                         />
                         <Text
                           style={{
@@ -154,7 +192,7 @@ const Lineup = () => {
                             lineHeight: 16,
                             paddingHorizontal: 10,
                           }}>
-                          35.
+                          {item?.match_played}
                         </Text>
                         <Text
                           style={{
@@ -164,10 +202,10 @@ const Lineup = () => {
                             fontWeight: '600',
                             lineHeight: 18,
                           }}>
-                          B. White
+                          {item?.name}
                         </Text>
                       </View>
-
+                      {/* 
                       <View
                         style={{
                           alignItems: 'center',
@@ -216,8 +254,25 @@ const Lineup = () => {
                             6.8
                           </Text>
                         </TouchableOpacity>
-                      </View>
+                      </View> */}
                     </View>
+                  </View>
+                );
+              }}
+              ListEmptyComponent={() => {
+                return (
+                  <View>
+                    <Text
+                      style={{
+                        color: '#000',
+                        fontSize: 14,
+                        fontFamily: fonts.bold,
+                        fontWeight: '600',
+                        lineHeight: 18,
+                        marginLeft: 5,
+                      }}>
+                      No Data
+                    </Text>
                   </View>
                 );
               }}
@@ -235,10 +290,11 @@ const Lineup = () => {
             }}>
             <FlatList
               nestedScrollEnabled
-              data={secondTabSecondListData}
+              data={homesubstitutions}
               showsHorizontalScrollIndicator={false}
               showsVerticalScrollIndicator={false}
               renderItem={({item, index}) => {
+                console.log('-----substitutes ---->>>', item);
                 return (
                   <View
                     style={{
@@ -291,7 +347,7 @@ const Lineup = () => {
                             fontWeight: '600',
                             lineHeight: 18,
                           }}>
-                          78'
+                          {item.time}'
                         </Text>
                         <Image
                           style={{
@@ -313,7 +369,9 @@ const Lineup = () => {
                             fontWeight: '600',
                             lineHeight: 18,
                           }}>
-                          Allen Saint-Maximin
+                          {item.substitution &&
+                            item.substitution.split('|').length > 0 &&
+                            item.substitution.split('|')[0]}
                         </Text>
                         <Text
                           style={{
@@ -323,10 +381,54 @@ const Lineup = () => {
                             fontWeight: '500',
                             lineHeight: 18,
                           }}>
-                          Joe Willock
+                          {item.substitution &&
+                            item.substitution.split('|').length > 1 &&
+                            item.substitution.split('|')[1]}
                         </Text>
                       </View>
                     </View>
+                  </View>
+                );
+              }}
+              ListEmptyComponent={() => {
+                return (
+                  <View>
+                    <View
+                      style={[
+                        styles._renderItemHeader,
+                        {backgroundColor: '#F1F1F1'},
+                      ]}>
+                      <View
+                        style={{
+                          alignItems: 'center',
+                          flexDirection: 'row',
+                        }}>
+                        <Text
+                          style={{
+                            color: '#181829',
+                            fontSize: 14,
+                            fontFamily: fonts.bold,
+                            fontWeight: '700',
+                            lineHeight: 18,
+                            marginLeft: 5,
+                          }}>
+                          SUBSTITUTIONS
+                        </Text>
+                      </View>
+                    </View>
+                    <Text
+                      style={{
+                        color: '#000',
+                        fontSize: 14,
+                        fontFamily: fonts.bold,
+                        fontWeight: '600',
+                        lineHeight: 18,
+                        marginLeft: 5,
+                        paddingVertical: 10,
+                        textAlign: 'center',
+                      }}>
+                      No Data
+                    </Text>
                   </View>
                 );
               }}
@@ -369,7 +471,7 @@ const Lineup = () => {
                               height: 20,
                               resizeMode: 'center',
                             }}
-                            source={IconPath.teamthird}
+                            source={{uri: homeTeam?.teamAwayBadge}}
                           />
                           <Text
                             style={{
@@ -380,11 +482,11 @@ const Lineup = () => {
                               lineHeight: 18,
                               marginLeft: 5,
                             }}>
-                            Arsenal
+                            {homeTeam?.match_awayteam_name}
                           </Text>
                         </View>
 
-                        <View
+                        {/* <View
                           style={{
                             alignItems: 'center',
                             flexDirection: 'row',
@@ -396,7 +498,7 @@ const Lineup = () => {
                           <Text style={styles._subText}>3</Text>
                           <Text style={[styles._subText, {}]}>-</Text>
                           <Text style={styles._subText}>1</Text>
-                        </View>
+                        </View> */}
                       </View>
                     )}
                     <View
@@ -420,7 +522,7 @@ const Lineup = () => {
                             height: 30,
                             resizeMode: 'center',
                           }}
-                          source={ImagePath.userProfile}
+                          source={{uri: item?.image}}
                         />
                         <Text
                           style={{
@@ -431,7 +533,7 @@ const Lineup = () => {
                             lineHeight: 16,
                             paddingHorizontal: 10,
                           }}>
-                          35.
+                          {item?.match_played}
                         </Text>
                         <Text
                           style={{
@@ -441,11 +543,11 @@ const Lineup = () => {
                             fontWeight: '600',
                             lineHeight: 18,
                           }}>
-                          B. White
+                          {item?.name}
                         </Text>
                       </View>
 
-                      <View
+                      {/* <View
                         style={{
                           alignItems: 'center',
                           flexDirection: 'row',
@@ -493,8 +595,25 @@ const Lineup = () => {
                             6.8
                           </Text>
                         </TouchableOpacity>
-                      </View>
+                      </View> */}
                     </View>
+                  </View>
+                );
+              }}
+              ListEmptyComponent={() => {
+                return (
+                  <View>
+                    <Text
+                      style={{
+                        color: '#000',
+                        fontSize: 14,
+                        fontFamily: fonts.bold,
+                        fontWeight: '600',
+                        lineHeight: 18,
+                        marginLeft: 5,
+                      }}>
+                      No Data
+                    </Text>
                   </View>
                 );
               }}
@@ -512,7 +631,7 @@ const Lineup = () => {
             }}>
             <FlatList
               nestedScrollEnabled
-              data={secondTabSecondListData}
+              data={awaysubstitutions}
               showsHorizontalScrollIndicator={false}
               showsVerticalScrollIndicator={false}
               renderItem={({item, index}) => {
@@ -568,7 +687,7 @@ const Lineup = () => {
                             fontWeight: '600',
                             lineHeight: 18,
                           }}>
-                          78'
+                          {item.time}'
                         </Text>
                         <Image
                           style={{
@@ -590,7 +709,9 @@ const Lineup = () => {
                             fontWeight: '600',
                             lineHeight: 18,
                           }}>
-                          Allen Saint-Maximin
+                          {item.substitution &&
+                            item.substitution.split('|').length > 0 &&
+                            item.substitution.split('|')[0]}
                         </Text>
                         <Text
                           style={{
@@ -600,10 +721,54 @@ const Lineup = () => {
                             fontWeight: '500',
                             lineHeight: 18,
                           }}>
-                          Joe Willock
+                          {item.substitution &&
+                            item.substitution.split('|').length > 1 &&
+                            item.substitution.split('|')[1]}
                         </Text>
                       </View>
                     </View>
+                  </View>
+                );
+              }}
+              ListEmptyComponent={() => {
+                return (
+                  <View>
+                    <View
+                      style={[
+                        styles._renderItemHeader,
+                        {backgroundColor: '#F1F1F1'},
+                      ]}>
+                      <View
+                        style={{
+                          alignItems: 'center',
+                          flexDirection: 'row',
+                        }}>
+                        <Text
+                          style={{
+                            color: '#181829',
+                            fontSize: 14,
+                            fontFamily: fonts.bold,
+                            fontWeight: '700',
+                            lineHeight: 18,
+                            marginLeft: 5,
+                          }}>
+                          SUBSTITUTIONS
+                        </Text>
+                      </View>
+                    </View>
+                    <Text
+                      style={{
+                        color: '#000',
+                        fontSize: 14,
+                        fontFamily: fonts.bold,
+                        fontWeight: '600',
+                        lineHeight: 18,
+                        marginLeft: 5,
+                        paddingVertical: 10,
+                        textAlign: 'center',
+                      }}>
+                      No Data
+                    </Text>
                   </View>
                 );
               }}

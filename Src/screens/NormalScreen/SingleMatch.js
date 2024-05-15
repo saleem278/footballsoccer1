@@ -13,7 +13,7 @@ const SingleMatch = ({route, navigation}) => {
   const item = route?.params.item;
   const Tab = createMaterialTopTabNavigator();
   const routeName = getFocusedRouteNameFromRoute(route);
-  console.log('---item------------------>>>>>>>>>>>', item);
+  console.log('---item---hshhshhshsh------asd--------->>>>>>>>>>>', item);
 
   return (
     <View style={{flex: 1}}>
@@ -87,22 +87,25 @@ const SingleMatch = ({route, navigation}) => {
           name="Event"
           component={Event}
           options={{tabBarLabel: 'Event'}}
+          initialParams={{id: item?.eventId}}
         />
-        <Tab.Screen
+        {/* <Tab.Screen
           name="Live"
           component={Live}
           options={{tabBarLabel: 'Live'}}
-        />
+        /> */}
         <Tab.Screen
           name="Lineup"
           component={Lineup}
           options={{tabBarLabel: 'Lineup'}}
+          initialParams={{id: item?.eventId}}
+
         />
-        <Tab.Screen
+        {/* <Tab.Screen
           name="Stats"
           component={Stats}
           options={{tabBarLabel: 'Stats'}}
-        />
+        /> */}
       </Tab.Navigator>
     </View>
   );
@@ -180,7 +183,7 @@ const styles = StyleSheet.create({
     height: 48,
     // borderRadius: 25,
     marginBottom: 20,
-    resizeMode:'contain'
+    resizeMode: 'contain',
   },
   teamName: {
     color: '#FFF',
