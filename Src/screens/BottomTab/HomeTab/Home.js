@@ -10,6 +10,7 @@ import {
   Image,
   TouchableOpacity,
   ActivityIndicator,
+  Alert,
 } from 'react-native';
 import {HomeData, newsData} from '../../../constants/Data';
 import HomeItem from '../../../Custom/HomeItem';
@@ -52,21 +53,26 @@ const Home = () => {
       .then(result => {
         const parseData = JSON.parse(result);
         if (parseData.status === true) {
-          setLoading(false);
           setDashBoardData(parseData.data.liveScore);
           setNewsTopData(parseData.data.topNews);
+          setLoading(false);
         } else {
+          Alert.alert('status false');
+          setLoading(false);
           setNodata(true);
         }
       })
-      .catch(error => console.error(error));
+      .catch(error => {
+        setLoading(false);
+        Alert.alert(JSON.stringify(error));
+        console.error(error);
+      });
   };
 
   useEffect(() => {
     ApiFetchData();
   }, [useFocused]);
 
-  
   const renderItem = ({item, index}) => {
     if (index === 0) {
       return (
@@ -208,7 +214,7 @@ const Home = () => {
             alignItems: 'center',
             justifyContent: 'center',
             position: 'absolute',
-            top:70,
+            top: 70,
             bottom: 0,
             right: 0,
             left: 0,
