@@ -46,7 +46,6 @@ const News = () => {
       .then(response => response.text())
       .then(result => {
         const parsedData = JSON.parse(result);
-        console.log("asdfsadf",parsedData)
         if (parsedData) {
           setLoading(false);
           setNewsData(parsedData.data);
@@ -85,13 +84,12 @@ const News = () => {
           ]}>
           <View
             style={{
-              borderWidth: 2,
               width: '100%',
               height: 200,
               borderColor: '#F6F6F6',
               borderRadius: 15,
             }}>
-            <ImageLoader source={{uri: item?.image}} />
+            <ImageLoader style={{resizeMode:"stretch"}} source={{uri: item?.image}} />
           </View>
           <View style={styles.newsContent}>
             <Text style={styles.newsTitle}>{item.title}</Text>
@@ -246,10 +244,6 @@ const styles = StyleSheet.create({
   },
   newsItem: {
     flexDirection: 'row',
-    alignItems: 'flex-start',
-    borderBottomWidth: 2,
-    borderBottomColor: '#F6F6F6',
-    width: '95%',
     alignSelf: 'center',
     marginBottom: 0,
   },

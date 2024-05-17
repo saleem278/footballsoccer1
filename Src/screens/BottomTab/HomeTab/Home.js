@@ -100,7 +100,7 @@ const Home = () => {
               borderColor: '#F6F6F6',
               borderRadius: 15,
             }}>
-            <ImageLoader source={{uri: item?.image}} />
+            <ImageLoader style={{resizeMode:"stretch",}} source={{uri: item?.image}} />
           </View>
 
           <View style={styles.newsContent}>
@@ -201,7 +201,7 @@ const Home = () => {
     <View style={styles.container}>
       <CustomHeader
         title="1010Soccer"
-        showIcon={true}
+        showIcon={false}
         iconSource={IconPath.notification}
         onPress={() => {}}
         scrollY={scrollY}
@@ -230,7 +230,9 @@ const Home = () => {
           <FlatList
             data={dashBoardData}
             style={{width: '95%', alignSelf: 'center'}}
-            renderItem={({item}) => <HomeItem item={item} loading={loading} />}
+            renderItem={({item,index}) => (
+              <HomeItem index={index} item={item} loading={loading} />
+            )}
           />
           <View style={styles.emptyView}></View>
           <Text style={styles.Topnews}>Top News</Text>

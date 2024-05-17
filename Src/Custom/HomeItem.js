@@ -4,20 +4,23 @@ import {fonts} from '../assets';
 import {useNavigation} from '@react-navigation/native';
 import ImageLoader from './ImageLoader';
 
-const HomeItem = ({item}) => {
+const HomeItem = ({item, index}) => {
   const navigation = useNavigation();
+  const even_card = index % 2 == 0;
+  console.log(index,"index")
   return (
     <TouchableOpacity
       activeOpacity={0.8}
       onPress={() => navigation.navigate('SingleMatch', {item: item})}
       style={[
         styles.itemContainer,
-        {backgroundColor: !item.match_live ? '#1029AA' : '#ED1645'},
+        {backgroundColor: even_card ? '#1029AA' : '#ED1645'},
       ]}>
       <View style={styles.teamContainer}>
         <ImageLoader
           source={{uri: item?.teamHomeBadge}}
           style={styles.teamImage}
+          activityIndicatorStyle={{backgroundColor:even_card?'#1029AA' : '#ED1645'}}
         />
         <Text style={styles.teamName}>{item.matchHometeamName}</Text>
       </View>
@@ -53,11 +56,16 @@ const HomeItem = ({item}) => {
         <ImageLoader
           source={{uri: item?.teamAwayBadge}}
           style={styles.teamImage}
+          activityIndicatorStyle={{backgroundColor:even_card?'#1029AA' : '#ED1645'}}
         />
         <Text style={styles.teamName}>{item.matchAwayteamName}</Text>
       </View>
-      {item?.status === 'Live' && (
-        <View style={styles.liveContainer}>
+      {item?.match_live && (
+        <View
+          style={[
+            styles.liveContainer,
+            {backgroundColor: !even_card ? '#1029AA' : '#ED1645'},
+          ]}>
           <Text style={styles.live}>Live Now</Text>
         </View>
       )}
@@ -139,7 +147,7 @@ const styles = StyleSheet.create({
   },
   liveContainer: {
     position: 'absolute',
-    backgroundColor: '#ED1645',
+    // backgroundColor: '#ED1645',
     borderRadius: 30,
     padding: 4,
     right: 10,

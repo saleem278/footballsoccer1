@@ -49,7 +49,7 @@ const ImageLoader = ({
   };
 
   return (
-    <View style={{...containerStyle}}>
+    <View style={[containerStyle]}>
       {loading || !source.uri ? renderActivityIndicator() : null}
       <Image
         style={{
