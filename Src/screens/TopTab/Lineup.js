@@ -258,23 +258,23 @@ const Lineup = ({route}) => {
                   </View>
                 );
               }}
-              ListEmptyComponent={() => {
-                return (
-                  <View>
-                    <Text
-                      style={{
-                        color: '#000',
-                        fontSize: 14,
-                        fontFamily: fonts.bold,
-                        fontWeight: '600',
-                        lineHeight: 18,
-                        marginLeft: 5,
-                      }}>
-                      No Data
-                    </Text>
-                  </View>
-                );
-              }}
+              // ListEmptyComponent={() => {
+              //   return (
+              //     <View>
+              //       <Text
+              //         style={{
+              //           color: '#000',
+              //           fontSize: 14,
+              //           fontFamily: fonts.bold,
+              //           fontWeight: '600',
+              //           lineHeight: 18,
+              //           marginLeft: 5,
+              //         }}>
+              //         No Data
+              //       </Text>
+              //     </View>
+              //   );
+              // }}
             />
           </View>
 
@@ -388,48 +388,48 @@ const Lineup = ({route}) => {
                   </View>
                 );
               }}
-              ListEmptyComponent={() => {
-                return (
-                  <View>
-                    <View
-                      style={[
-                        styles._renderItemHeader,
-                        {backgroundColor: '#F1F1F1'},
-                      ]}>
-                      <View
-                        style={{
-                          alignItems: 'center',
-                          flexDirection: 'row',
-                        }}>
-                        <Text
-                          style={{
-                            color: '#181829',
-                            fontSize: 14,
-                            fontFamily: fonts.bold,
-                            fontWeight: '700',
-                            lineHeight: 18,
-                            marginLeft: 5,
-                          }}>
-                          SUBSTITUTIONS
-                        </Text>
-                      </View>
-                    </View>
-                    <Text
-                      style={{
-                        color: '#000',
-                        fontSize: 14,
-                        fontFamily: fonts.bold,
-                        fontWeight: '600',
-                        lineHeight: 18,
-                        marginLeft: 5,
-                        paddingVertical: 10,
-                        textAlign: 'center',
-                      }}>
-                      No Data
-                    </Text>
-                  </View>
-                );
-              }}
+              // ListEmptyComponent={() => {
+              //   return (
+              //     <View>
+              //       <View
+              //         style={[
+              //           styles._renderItemHeader,
+              //           {backgroundColor: '#F1F1F1'},
+              //         ]}>
+              //         <View
+              //           style={{
+              //             alignItems: 'center',
+              //             flexDirection: 'row',
+              //           }}>
+              //           <Text
+              //             style={{
+              //               color: '#181829',
+              //               fontSize: 14,
+              //               fontFamily: fonts.bold,
+              //               fontWeight: '700',
+              //               lineHeight: 18,
+              //               marginLeft: 5,
+              //             }}>
+              //             SUBSTITUTIONS
+              //           </Text>
+              //         </View>
+              //       </View>
+              //       <Text
+              //         style={{
+              //           color: '#000',
+              //           fontSize: 14,
+              //           fontFamily: fonts.bold,
+              //           fontWeight: '600',
+              //           lineHeight: 18,
+              //           marginLeft: 5,
+              //           paddingVertical: 10,
+              //           textAlign: 'center',
+              //         }}>
+              //         No Data
+              //       </Text>
+              //     </View>
+              //   );
+              // }}
             />
           </View>
         </ScrollView>
@@ -598,23 +598,23 @@ const Lineup = ({route}) => {
                   </View>
                 );
               }}
-              ListEmptyComponent={() => {
-                return (
-                  <View>
-                    <Text
-                      style={{
-                        color: '#000',
-                        fontSize: 14,
-                        fontFamily: fonts.bold,
-                        fontWeight: '600',
-                        lineHeight: 18,
-                        marginLeft: 5,
-                      }}>
-                      No Data
-                    </Text>
-                  </View>
-                );
-              }}
+              // ListEmptyComponent={() => {
+              //   return (
+              //     <View>
+              //       <Text
+              //         style={{
+              //           color: '#000',
+              //           fontSize: 14,
+              //           fontFamily: fonts.bold,
+              //           fontWeight: '600',
+              //           lineHeight: 18,
+              //           marginLeft: 5,
+              //         }}>
+              //         No Data
+              //       </Text>
+              //     </View>
+              //   );
+              // }}
             />
           </View>
 
@@ -728,48 +728,48 @@ const Lineup = ({route}) => {
                   </View>
                 );
               }}
-              ListEmptyComponent={() => {
-                return (
-                  <View>
-                    <View
-                      style={[
-                        styles._renderItemHeader,
-                        {backgroundColor: '#F1F1F1'},
-                      ]}>
-                      <View
-                        style={{
-                          alignItems: 'center',
-                          flexDirection: 'row',
-                        }}>
-                        <Text
-                          style={{
-                            color: '#181829',
-                            fontSize: 14,
-                            fontFamily: fonts.bold,
-                            fontWeight: '700',
-                            lineHeight: 18,
-                            marginLeft: 5,
-                          }}>
-                          SUBSTITUTIONS
-                        </Text>
-                      </View>
-                    </View>
-                    <Text
-                      style={{
-                        color: '#000',
-                        fontSize: 14,
-                        fontFamily: fonts.bold,
-                        fontWeight: '600',
-                        lineHeight: 18,
-                        marginLeft: 5,
-                        paddingVertical: 10,
-                        textAlign: 'center',
-                      }}>
-                      No Data
-                    </Text>
-                  </View>
-                );
-              }}
+              // ListEmptyComponent={() => {
+              //   return (
+              //     <View>
+              //       <View
+              //         style={[
+              //           styles._renderItemHeader,
+              //           {backgroundColor: '#F1F1F1'},
+              //         ]}>
+              //         <View
+              //           style={{
+              //             alignItems: 'center',
+              //             flexDirection: 'row',
+              //           }}>
+              //           <Text
+              //             style={{
+              //               color: '#181829',
+              //               fontSize: 14,
+              //               fontFamily: fonts.bold,
+              //               fontWeight: '700',
+              //               lineHeight: 18,
+              //               marginLeft: 5,
+              //             }}>
+              //             SUBSTITUTIONS
+              //           </Text>
+              //         </View>
+              //       </View>
+              //       <Text
+              //         style={{
+              //           color: '#000',
+              //           fontSize: 14,
+              //           fontFamily: fonts.bold,
+              //           fontWeight: '600',
+              //           lineHeight: 18,
+              //           marginLeft: 5,
+              //           paddingVertical: 10,
+              //           textAlign: 'center',
+              //         }}>
+              //         No Data
+              //       </Text>
+              //     </View>
+              //   );
+              // }}
             />
           </View>
         </ScrollView>

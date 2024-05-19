@@ -1,50 +1,71 @@
 import React from 'react';
-import {View, Text, StyleSheet, Image} from 'react-native';
+import {View, Text, StyleSheet, Image, TouchableOpacity} from 'react-native';
 import {fonts} from '../assets';
+import ImageLoader from './ImageLoader';
+import {useNavigation} from '@react-navigation/native';
 
 const MatchItem = ({match}) => {
+  const navigation = useNavigation();
+
   const {
-    teamfirst,
-    teamfirstIcon,
-    teamsecond,
-    teamsecondIcon,
-    teamscore,
-    teamsecondscore,
-    status,
-    time,
-    day,
-    teamdegree,
+    match_hometeam_name,
+    teamHomeBadge,
+    match_awayteam_name,
+    teamAwayBadge,
+    match_hometeam_score,
+    match_awayteam_score,
+    match_live,
+    matchDate,
+    matchTime,
+    matchStatus,
   } = match;
 
   return (
-    <View style={styles.container}>
+    <TouchableOpacity
+      onPress={() =>
+        navigation.navigate('SingleMatch', {
+          item: {
+            ...match,
+            matchHometeamName: match_hometeam_name,
+            matchAwayteamName: match_awayteam_name,
+            teamHomeBadge: teamHomeBadge,
+            teamAwayBadge: teamAwayBadge,
+            matchHometeamScore: match_hometeam_score,
+            matchAwayteamScore: match_awayteam_score,
+            time: matchTime,
+            day: matchDate,
+          },
+        })
+      }
+      activeOpacity={0.9}
+      style={styles.container}>
       <View
         style={{
           flexDirection: 'column',
           alignItems: 'flex-start',
         }}>
         <View style={styles.teamColumn}>
-          <Image source={teamfirstIcon} style={styles.teamIcon} />
-          <Text style={styles.teamName}>{teamfirst}</Text>
+          <ImageLoader source={{uri: teamHomeBadge}} style={styles.teamIcon} />
+          <Text style={styles.teamName}>{match_hometeam_name}</Text>
         </View>
         <View style={styles.teamColumn}>
-          <Image source={teamsecondIcon} style={styles.teamIcon} />
-          <Text style={styles.teamName}>{teamsecond}</Text>
+          <ImageLoader source={{uri: teamAwayBadge}} style={styles.teamIcon} />
+          <Text style={styles.teamName}>{match_awayteam_name}</Text>
         </View>
       </View>
-      {teamdegree && (
+      {matchStatus && (
         <View style={{position: 'absolute', top: 33, right: 40}}>
-          <Text style={[styles.degree]}>{teamdegree}'</Text>
+          <Text style={[styles.degree]}>{matchStatus}</Text>
         </View>
       )}
-      {status ? (
+      {!match_live ? (
         <View
           style={{
             flexDirection: 'column',
             alignItems: 'flex-end',
           }}>
-          <Text style={[styles.dayTime]}>{` ${day}`}</Text>
-          <Text style={styles.dayTime}>{` ${time}`}</Text>
+          <Text style={[styles.dayTime]}>{` ${matchDate}`}</Text>
+          <Text style={styles.dayTime}>{` ${matchTime}`}</Text>
         </View>
       ) : (
         <View style={{}}>
@@ -52,19 +73,19 @@ const MatchItem = ({match}) => {
             style={[
               styles.matchDetails,
               {
-                color: teamdegree ? '#246BFD' : '#181829',
+                color: match_live ? '#246BFD' : '#181829',
               },
-            ]}>{` ${teamscore}`}</Text>
+            ]}>{` ${match_hometeam_score}`}</Text>
           <Text
             style={[
               styles.matchDetails,
               {
-                color: teamdegree ? '#246BFD' : '#181829',
+                color: match_live ? '#246BFD' : '#181829',
               },
-            ]}>{` ${teamsecondscore}`}</Text>
+            ]}>{` ${match_awayteam_score}`}</Text>
         </View>
       )}
-    </View>
+    </TouchableOpacity>
   );
 };
 

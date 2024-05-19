@@ -1,40 +1,114 @@
-import React, {useRef, useEffect, useState} from 'react';
+import React, {useRef, useEffect, useState, useCallback} from 'react';
 import {
   StyleSheet,
   View,
   Animated,
   FlatList,
-  StatusBar,
   Text,
   Image,
   TouchableOpacity,
+  ActivityIndicator,
+  StatusBar,
 } from 'react-native';
-import {newsData, resultData} from '../../../constants/Data';
+import moment from 'moment';
 import CustomHeader from '../../../Custom/CustomHeader';
-import {IconPath, ImagePath, fonts} from '../../../assets';
+import {IconPath, fonts} from '../../../assets';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import MatchItem from '../../../Custom/MatchItem';
+import {LiveUrl} from '../../../backend/env';
+import {useIsFocused} from '@react-navigation/native';
+import ImageLoader from '../../../Custom/ImageLoader';
 
-const Matches = () => {
+const Result = () => {
+  const focused = useIsFocused();
   const scrollY = useRef(new Animated.Value(0)).current;
-  const [activeDay, setActiveDay] = useState('');
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
-  const [selectedDate, setSelectedDate] = useState(new Date()); // Initialize with current date
+  const [selectedDate, setSelectedDate] = useState(null);
+  const [dateforPicker, setDateForPicker] = useState(new Date());
+  const [currentPage, setCurrentPage] = useState(1);
+  const [resultsData, setResultsData] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [hasMore, setHasMore] = useState(true);
+  const [initialDataLoaded, setInitialDataLoaded] = useState(false);
+
+  const handleLoadMore = useCallback(() => {
+    if (hasMore) {
+      setCurrentPage(prevPageNumber => prevPageNumber + 1);
+    }
+  }, [hasMore]);
+
+  const renderFooter = () => {
+    if (!loading) return null;
+    return (
+      <ActivityIndicator style={{marginTop: 10}} size="large" color="#0000ff" />
+    );
+  };
+
+  const fetchData = useCallback(
+    async (page, reset = false, selectedDate = null) => {
+      if (!hasMore) return;
+
+      setLoading(true);
+
+      try {
+        const requestOptions = {
+          method: 'GET',
+          redirect: 'follow',
+        };
+
+        let url = `${LiveUrl}api/v1/events?page=${page}`;
+        if (selectedDate) {
+          url = `${LiveUrl}api/v1/events/${moment(selectedDate).format(
+            'DD-MM-YYYY',
+          )}?page=${page}`;
+        }
+
+        const response = await fetch(url, requestOptions);
+        const result = await response.text();
+        const parsedData = JSON.parse(result);
+
+        if (parsedData && parsedData.hasOwnProperty('LeageGroups')) {
+          const matches = convertAsPerRequirement(parsedData);
+          if (reset) {
+            setResultsData(matches);
+          } else {
+            setResultsData(prevData => [...prevData, ...matches]);
+          }
+          setInitialDataLoaded(true);
+          return page < parsedData?.pagination?.last_page;
+        } else {
+          setResultsData([]);
+          return false;
+        }
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setLoading(false);
+      }
+    },
+    [hasMore, selectedDate],
+  );
 
   useEffect(() => {
-    const listenerId = scrollY.addListener(({value}) => {
-      const backgroundColor = value > 50 ? '#edf5ff' : 'white';
-      StatusBar?.setBackgroundColor(backgroundColor, true);
-      StatusBar?.setBarStyle(
-        value > 50 ? 'dark-content' : 'dark-content',
-        true,
-      );
-    });
+    async function firstLoadEffect() {
+      if (focused && !initialDataLoaded) {
+        let res = await fetchData(1, true);
+        setHasMore(res);
+      }
+    }
 
-    return () => {
-      scrollY.removeListener(listenerId);
-    };
-  }, [scrollY]);
+    firstLoadEffect();
+  }, [focused, initialDataLoaded, fetchData]);
+
+  useEffect(() => {
+    async function currentPageEffect() {
+      if (currentPage > 1 && !loading) {
+        let res = await fetchData(currentPage);
+        setHasMore(res);
+      }
+    }
+    currentPageEffect();
+  }, [currentPage, fetchData]);
 
   const handleOpenDatePicker = () => {
     setDatePickerVisibility(true);
@@ -44,17 +118,9 @@ const Matches = () => {
     setDatePickerVisibility(false);
   };
 
-  const handleConfirmDate = date => {
-    setSelectedDate(date);
-    handleCloseDatePicker();
-  };
-
   const calendarData = [1, 2, 3, 4, 5, 6];
-
-  const currentDate = new Date(); // Get the current date
-  const currentDay = currentDate.getDay(); // Get the day of the week (0 for Sunday, 1 for Monday, ..., 6 for Saturday)
-
-  // Array to map numerical representation of day to its short name
+  const currentDate = new Date();
+  const currentDay = currentDate.getDay();
   const dayShortNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
   function getNextNDaysData(n) {
@@ -62,13 +128,44 @@ const Matches = () => {
     for (let i = 0; i < n; i++) {
       const date = new Date(currentDate);
       date.setDate(date.getDate() + i);
-      const day = (currentDay + i) % 7; // Modulo 7 to ensure we loop through days (0 to 6)
+      const day = (currentDay + i) % 7;
       result.push({date: date.getDate(), day: dayShortNames[day]});
     }
     return result;
   }
 
   const newData = getNextNDaysData(calendarData.length);
+
+  const convertAsPerRequirement = data => {
+    return Object.keys(data.LeageGroups).map(key => ({
+      'league-name': data.LeageGroups[key]['league-name'],
+      'league-logo': data.LeageGroups[key]['league-logo'],
+      matches: data.LeageGroups[key].matches,
+    }));
+  };
+
+  const handleScroll = ({nativeEvent}) => {
+    const {layoutMeasurement, contentOffset, contentSize} = nativeEvent;
+    const isCloseToBottom =
+      layoutMeasurement.height + contentOffset.y >= contentSize.height - 80;
+
+    if (isCloseToBottom && !loading && hasMore) {
+      handleLoadMore();
+    }
+  };
+
+  useEffect(() => {
+    // Update StatusBar background color and style based on scroll position
+    const listenerId = scrollY.addListener(({value}) => {
+      const backgroundColor = value > 50 ? '#edf5ff' : 'white';
+      StatusBar.setBackgroundColor(backgroundColor, true);
+      StatusBar.setBarStyle(value > 50 ? 'dark-content' : 'dark-content', true);
+    });
+
+    return () => {
+      scrollY.removeListener(listenerId);
+    };
+  }, [scrollY]);
 
   return (
     <View style={styles.container}>
@@ -81,17 +178,17 @@ const Matches = () => {
       />
       <Animated.ScrollView
         style={styles.scrollView}
-        onScroll={Animated.event(
-          [{nativeEvent: {contentOffset: {y: scrollY}}}],
-          {useNativeDriver: false},
-        )}
+        onScroll={(e) => {
+          Animated.event([{nativeEvent: {contentOffset: {y: scrollY}}}], {
+            useNativeDriver: false,
+          })(e);
+          handleScroll(e);
+        }}
         scrollEventThrottle={16}>
         <FlatList
           data={newData}
           horizontal
-          style={{
-            marginTop:10
-          }}
+          style={{marginTop: 10, height: 90}}
           showsHorizontalScrollIndicator={false}
           renderItem={({item, index}) => (
             <View style={{flex: 1}}>
@@ -106,27 +203,27 @@ const Matches = () => {
                 </TouchableOpacity>
               ) : (
                 <TouchableOpacity
-                  onPress={() =>
-                    setSelectedDate(
-                      new Date(
-                        selectedDate.getFullYear(),
-                        selectedDate.getMonth(),
-                        item.date,
-                      ),
-                    )
-                  }
+                  onPress={() => {
+                    const newSelectedDate = new Date(currentDate);
+                    newSelectedDate.setDate(item.date);
+                    setSelectedDate(newSelectedDate);
+                    setCurrentPage(1);
+                    setResultsData([]);
+                    setHasMore(true);
+                    fetchData(1, true, newSelectedDate);
+                  }}
                   style={[
                     styles.activeindexView,
                     {
                       backgroundColor:
-                        selectedDate.getDate() === item.date
+                        selectedDate && selectedDate.getDate() === item.date
                           ? '#246BFD'
                           : '#F1F1F1',
                     },
                   ]}>
                   <Text
                     style={[
-                      selectedDate.getDate() === item?.date
+                      selectedDate && selectedDate.getDate() === item.date
                         ? styles.dateText
                         : styles.dayText,
                     ]}>
@@ -134,7 +231,7 @@ const Matches = () => {
                   </Text>
                   <Text
                     style={[
-                      selectedDate.getDate() === item?.date
+                      selectedDate && selectedDate.getDate() === item.date
                         ? styles.dateText
                         : styles.dayText,
                     ]}>
@@ -144,11 +241,25 @@ const Matches = () => {
               )}
             </View>
           )}
-          // keyExtractor={item => item.id.toString()}
         />
         <FlatList
-          data={resultData}
-          style={{marginBottom:10}}
+          data={resultsData}
+          ListFooterComponent={renderFooter}
+          ListEmptyComponent={() => (
+            <>
+              {!loading && (
+                <View
+                  style={{
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    height: 400,
+                  }}>
+                  <Text style={{color: 'black'}}>No Matches Found</Text>
+                </View>
+              )}
+            </>
+          )}
+          style={{marginBottom: 10, marginTop: 5}}
           renderItem={({item}) => (
             <View
               style={{
@@ -167,17 +278,15 @@ const Matches = () => {
                   borderBottomWidth: 1,
                   borderColor: '#ddd',
                 }}>
-                <Image
+                <ImageLoader
                   style={{
                     width: 25,
                     height: 25,
                     resizeMode: 'contain',
                   }}
-                  source={item?.icon}></Image>
-                <View
-                  style={{
-                    marginLeft: 8,
-                  }}>
+                  source={item['league-logo']}
+                />
+                <View style={{marginLeft: 8}}>
                   <Text
                     style={{
                       color: '#23262D',
@@ -185,7 +294,7 @@ const Matches = () => {
                       fontSize: 12,
                       fontFamily: fonts.medium,
                     }}>
-                    {item.titleplayer}
+                    {item['league-name']}
                   </Text>
                   <Text
                     style={{
@@ -194,26 +303,32 @@ const Matches = () => {
                       fontSize: 12,
                       fontFamily: fonts.medium,
                     }}>
-                    {item.teamname}
+                    {item.matches[0].countryName}
                   </Text>
                 </View>
               </View>
               <FlatList
-                data={item.data}
+                data={item.matches}
                 renderItem={({item}) => <MatchItem match={item} />}
                 keyExtractor={(item, index) => index.toString()}
               />
             </View>
           )}
-          keyExtractor={item => item.id.toString()}
         />
       </Animated.ScrollView>
       {isDatePickerVisible && (
         <DateTimePickerModal
           isVisible={isDatePickerVisible}
           mode="date"
-          date={selectedDate} // Pass selected date to DateTimePickerModal
-          onConfirm={handleConfirmDate} // Update selected date on confirmation
+          date={selectedDate ? selectedDate : dateforPicker}
+          onConfirm={date => {
+            setDatePickerVisibility(false);
+            setSelectedDate(date);
+            setCurrentPage(1);
+            setResultsData([]);
+            setHasMore(true);
+            fetchData(1, true, date);
+          }}
           onCancel={handleCloseDatePicker}
         />
       )}
@@ -228,62 +343,6 @@ const styles = StyleSheet.create({
   },
   scrollView: {
     flex: 1,
-  },
-  emptyView: {
-    borderBottomWidth: 2,
-    borderColor: '#F1F1F1',
-    width: '100%',
-    height: 1,
-    marginBottom: 5,
-    marginTop: 10,
-  },
-  Topnews: {
-    color: '#181829',
-    fontWeight: '700',
-    fontFamily: fonts.medium,
-    paddingHorizontal: 15,
-    fontSize: 18,
-    marginBottom: 15,
-  },
-  newsItem: {
-    flexDirection: 'row',
-    alignItems: 'flex-start',
-    borderBottomWidth: 2,
-    borderBottomColor: '#F6F6F6',
-    width: '95%',
-    alignSelf: 'center',
-    marginBottom: 0,
-  },
-  newsImage: {
-    width: 80,
-    height: 80,
-    resizeMode: 'contain',
-    marginRight: 10,
-  },
-  newsContent: {
-    flex: 1,
-    width: '100%',
-  },
-  newsTitle: {
-    fontWeight: '600',
-    fontSize: 16,
-    marginBottom: 5,
-    color: '#181829',
-    fontFamily: fonts.medium,
-  },
-  newsSubtitle: {
-    marginBottom: 5,
-    marginLeft: 5,
-    color: '#181829',
-    fontSize: 12,
-    fontWeight: '500',
-    fontFamily: fonts.medium,
-  },
-  newsTime: {
-    color: '#938E8E',
-    fontWeight: '600',
-    fontFamily: fonts.medium,
-    fontSize: 12,
   },
   lastIndexView: {
     backgroundColor: '#E0EAFF',
@@ -322,4 +381,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Matches;
+export default Result;

@@ -54,7 +54,11 @@ const SingleMatch = ({route, navigation}) => {
               <Text style={styles.vs}>{item?.matchAwayteamScore}</Text>
             </View>
             {item?.matchStatus ? (
-              <Text style={styles.degree}>{item?.matchStatus}'</Text>
+              <Text style={styles.degree}>
+                {item?.matchStatus == 'Finished'
+                  ? item?.matchStatus
+                  : item?.matchStatus + "'"}
+              </Text>
             ) : (
               <View style={styles.timeContainer}>
                 <Text style={styles.time}>{item.time}</Text>
@@ -98,7 +102,6 @@ const SingleMatch = ({route, navigation}) => {
           component={Lineup}
           options={{tabBarLabel: 'Lineup'}}
           initialParams={{id: item?.eventId}}
-
         />
         {/* <Tab.Screen
           name="Stats"

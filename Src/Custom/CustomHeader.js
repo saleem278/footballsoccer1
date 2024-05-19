@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 import {fonts} from '../assets';
 
-const CustomHeader = ({title, iconSource, onPress, scrollY, showIcon}) => {
+const CustomHeader = ({title, iconSource, onPress, scrollY, showIcon,style}) => {
   const headerBackgroundColor = scrollY.interpolate({
     inputRange: [0, 50],
     outputRange: ['white', '#edf5ff'],
@@ -20,6 +20,7 @@ const CustomHeader = ({title, iconSource, onPress, scrollY, showIcon}) => {
   return (
     <Animated.View
       style={[
+        style,
         styles.header,
         {
           backgroundColor: headerBackgroundColor,

@@ -1,4 +1,4 @@
-import React, {useRef, useEffect, useState} from 'react';
+import React, {useRef, useEffect, useState, useCallback} from 'react';
 import {
   StyleSheet,
   View,
@@ -21,6 +21,9 @@ const News = () => {
   const scrollY = useRef(new Animated.Value(0)).current;
   const [newsData, setNewsData] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [hasMore, setHasMore] = useState(true);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [initialHandleMore, setInitailHandleMore] = useState(false);
   const navigation = useNavigation();
   const focused = useIsFocused();
   useEffect(() => {
@@ -35,21 +38,49 @@ const News = () => {
     };
   }, [scrollY]);
 
-  const fetchData = () => {
+  const handleLoadMore = useCallback(() => {
+    if (hasMore) {
+      setCurrentPage(prevPageNumber => prevPageNumber + 1);
+    }
+  }, [hasMore]);
+
+  const handleScroll = ({nativeEvent}) => {
+    console.log('kkkkkkkkkkkkkkkkkkkk');
+    const {layoutMeasurement, contentOffset, contentSize} = nativeEvent;
+    const isCloseToBottom =
+      layoutMeasurement.height + contentOffset.y >= contentSize.height - 80;
+    console.log(loading, hasMore, isCloseToBottom);
+    if (isCloseToBottom && !loading && hasMore && initialHandleMore) {
+      setInitailHandleMore(false);
+      handleLoadMore();
+    }
+  };
+  const fetchData = useCallback((page = 1) => {
+    console.log(page, 'page');
     setLoading(true);
     const requestOptions = {
       method: 'GET',
       redirect: 'follow',
     };
 
-    fetch(LiveUrl + 'api/v1/posts?page=1?per_page=40', requestOptions)
+    fetch(LiveUrl + `api/v1/posts?page=${page}`, requestOptions)
       .then(response => response.text())
       .then(result => {
         const parsedData = JSON.parse(result);
-        if (parsedData) {
+        if (parsedData && parsedData.hasOwnProperty('data')) {
           setLoading(false);
-          setNewsData(parsedData.data);
+          if (page > 1) {
+            setNewsData(prevData => [...prevData, ...parsedData.data]);
+            setHasMore(page < parsedData?.pagination?.last_page);
+          } else {
+            console.log(page, parsedData);
+            setHasMore(page <= parsedData?.pagination?.last_page);
+            setNewsData(parsedData?.data);
+            setLoading(false);
+          }
+          setInitailHandleMore(true);
         } else {
+          setHasMore(false);
           setLoading(false);
         }
       })
@@ -57,11 +88,32 @@ const News = () => {
         setLoading(false);
         console.error(error);
       });
-  };
+  }, []);
+
+  console.log(currentPage, 'sadfasf');
 
   useEffect(() => {
-    fetchData();
-  }, [focused]);
+    if (focused) {
+      setCurrentPage(1);
+      setInitailHandleMore(false);
+      setHasMore(true);
+      setLoading(false);
+      setNewsData([]);
+      fetchData();
+    }
+  }, [focused, fetchData]);
+
+  useEffect(() => {
+    if (focused) {
+      async function currentPageEffect() {
+        console.log('sadfasfsdfs');
+        if (currentPage > 1 && !loading) {
+          fetchData(currentPage);
+        }
+      }
+      currentPageEffect();
+    }
+  }, [currentPage, focused, fetchData]);
 
   const renderItem = ({item, index}) => {
     if (index === 0) {
@@ -76,7 +128,6 @@ const News = () => {
           style={[
             styles.newsItem,
             {
-              height: 280,
               width: '95%',
               alignSelf: 'center',
               flexDirection: 'column',
@@ -84,32 +135,32 @@ const News = () => {
           ]}>
           <View
             style={{
+              borderWidth: 2,
               width: '100%',
               height: 200,
               borderColor: '#F6F6F6',
               borderRadius: 15,
             }}>
-            <ImageLoader style={{resizeMode:"stretch"}} source={{uri: item?.image}} />
+            <ImageLoader
+              style={{resizeMode: 'stretch'}}
+              source={{uri: item?.image}}
+            />
           </View>
+
           <View style={styles.newsContent}>
             <Text style={styles.newsTitle}>{item.title}</Text>
             <View
               style={{
                 flexDirection: 'row',
-                alignItems: 'center',
-                justifyContent: 'flex-end',
+                width: '100%',
+                justifyContent: 'space-between',
               }}>
-              {/* <View
+              <View
                 style={{
                   flexDirection: 'row',
-                  alignItems: 'center',
-                  width: '70%',
                 }}>
-                <Image
-                  style={{width: 13, height: 13, resizeMode: 'contain'}}
-                  source={item?.icon}></Image>
-                <Text style={[styles.newsSubtitle]}>{item.newstitle}</Text>
-              </View> */}
+                <Text style={styles.newsSubtitle}>{item.category_name}</Text>
+              </View>
               <Text
                 style={[
                   styles.newsTime,
@@ -117,7 +168,7 @@ const News = () => {
                     fontSize: 12,
                   },
                 ]}>
-                {item.time}
+                {item.formattedCreatedAt}
               </Text>
             </View>
           </View>
@@ -126,14 +177,15 @@ const News = () => {
     } else {
       return (
         <TouchableOpacity
-          activeOpacity={0.9}
           onPress={() =>
             navigation.navigate('SingleNews', {
               item: item,
             })
           }
+          activeOpacity={0.9}
           style={[
             styles.newsItem,
+
             {
               paddingVertical: 10,
             },
@@ -152,31 +204,29 @@ const News = () => {
               source={{uri: item?.image}}
             />
           </View>
+
           <View style={styles.newsContent}>
             <Text style={styles.newsTitle}>{item.title}</Text>
             <View
               style={{
                 flexDirection: 'row',
-                alignItems: 'center',
-                justifyContent: 'flex-end',
+                width: '100%',
+                justifyContent: 'space-between',
               }}>
-              {/* <View
-                style={{
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  width: '65%',
-                }}>
-                <Image
-                  style={{width: 13, height: 13, resizeMode: 'contain'}}
-                  source={item?.icon}></Image>
-                <Text style={styles.newsSubtitle}>{item.newstitle}</Text>
-              </View> */}
-              <Text style={styles.newsTime}>{item.formattedCreatedAt}</Text>
+              <View>
+                <Text style={styles.newsSubtitle}>{item.category_name}</Text>
+              </View>
+              <Text style={styles.newsTime}>{item?.formattedCreatedAt}</Text>
             </View>
           </View>
         </TouchableOpacity>
       );
     }
+  };
+
+  const renderFooter = () => {
+    if (!loading && currentPage > 1) return null;
+    return <ActivityIndicator size="large" color="#0000ff" />;
   };
 
   return (
@@ -188,7 +238,7 @@ const News = () => {
         onPress={() => {}}
         scrollY={scrollY}
       />
-      {loading ? (
+      {loading && currentPage == 1 ? (
         <ActivityIndicator
           size={'large'}
           color={'#ED1645'}
@@ -205,12 +255,33 @@ const News = () => {
         <>
           <Animated.ScrollView
             style={styles.scrollView}
-            onScroll={Animated.event(
-              [{nativeEvent: {contentOffset: {y: scrollY}}}],
-              {useNativeDriver: false},
-            )}
+            onScroll={e => {
+              Animated.event([{nativeEvent: {contentOffset: {y: scrollY}}}], {
+                useNativeDriver: false,
+              })(e);
+              handleScroll(e);
+            }}
             scrollEventThrottle={16}>
-            <FlatList data={newsData} renderItem={renderItem} />
+            <FlatList
+              scrollEventThrottle={16}
+              ListFooterComponent={renderFooter}
+              ListEmptyComponent={() => (
+                <>
+                  {!loading && (
+                    <View
+                      style={{
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        height: 400,
+                      }}>
+                      <Text style={{color: 'black'}}>No News Found</Text>
+                    </View>
+                  )}
+                </>
+              )}
+              data={newsData}
+              renderItem={renderItem}
+            />
           </Animated.ScrollView>
         </>
       )}
@@ -244,6 +315,10 @@ const styles = StyleSheet.create({
   },
   newsItem: {
     flexDirection: 'row',
+    alignItems: 'flex-start',
+    borderBottomWidth: 2,
+    borderBottomColor: '#F6F6F6',
+    width: '95%',
     alignSelf: 'center',
     marginBottom: 0,
   },
@@ -266,7 +341,7 @@ const styles = StyleSheet.create({
   },
   newsSubtitle: {
     marginBottom: 5,
-    marginLeft: 5,
+    // marginLeft: 5,
     color: '#181829',
     fontSize: 12,
     fontWeight: '500',

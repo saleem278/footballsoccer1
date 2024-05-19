@@ -86,7 +86,6 @@ const Home = () => {
           style={[
             styles.newsItem,
             {
-              height: 280,
               width: '95%',
               alignSelf: 'center',
               flexDirection: 'column',
@@ -100,7 +99,10 @@ const Home = () => {
               borderColor: '#F6F6F6',
               borderRadius: 15,
             }}>
-            <ImageLoader style={{resizeMode:"stretch",}} source={{uri: item?.image}} />
+            <ImageLoader
+              style={{resizeMode: 'stretch'}}
+              source={{uri: item?.image}}
+            />
           </View>
 
           <View style={styles.newsContent}>
@@ -108,21 +110,15 @@ const Home = () => {
             <View
               style={{
                 flexDirection: 'row',
-                alignItems: 'center',
-                justifyContent: 'flex-end',
+                width: '100%',
+                justifyContent: 'space-between',
               }}>
-              {/* <View
+              <View
                 style={{
                   flexDirection: 'row',
-                  alignItems: 'center',
-                  width: '70%',
                 }}>
-                <Image
-                  style={{width: 13, height: 13, resizeMode: 'contain'}}
-                  source={item?.icon}
-                />
-                <Text style={styles.newsSubtitle}>{item.newstitle}</Text>
-              </View> */}
+                <Text style={styles.newsSubtitle}>{item.category_name}</Text>
+              </View>
               <Text
                 style={[
                   styles.newsTime,
@@ -147,10 +143,7 @@ const Home = () => {
           activeOpacity={0.9}
           style={[
             styles.newsItem,
-            // {F
-            //   marginBottom: 10,
-            //   marginTop: 10,
-            // },
+
             {
               paddingVertical: 10,
             },
@@ -175,20 +168,12 @@ const Home = () => {
             <View
               style={{
                 flexDirection: 'row',
-                alignItems: 'center',
-                justifyContent: 'flex-end',
+                width: '100%',
+                justifyContent: 'space-between',
               }}>
-              {/* <View
-                style={{
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  width: '67%',
-                }}>
-                <Image
-                  style={{width: 13, height: 13, resizeMode: 'contain'}}
-                  source={item?.icon}></Image>
-                <Text style={styles.newsSubtitle}>{item.description}</Text>
-              </View> */}
+              <View>
+                <Text style={styles.newsSubtitle}>{item.category_name}</Text>
+              </View>
               <Text style={styles.newsTime}>{item?.formattedCreatedAt}</Text>
             </View>
           </View>
@@ -230,7 +215,7 @@ const Home = () => {
           <FlatList
             data={dashBoardData}
             style={{width: '95%', alignSelf: 'center'}}
-            renderItem={({item,index}) => (
+            renderItem={({item, index}) => (
               <HomeItem index={index} item={item} loading={loading} />
             )}
           />
@@ -299,7 +284,6 @@ const styles = StyleSheet.create({
   },
   newsSubtitle: {
     marginBottom: 5,
-    marginLeft: 5,
     color: '#181829',
     fontSize: 12,
     fontWeight: '500',
