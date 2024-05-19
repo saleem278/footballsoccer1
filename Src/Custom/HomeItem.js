@@ -1,5 +1,12 @@
-import React from 'react';
-import {View, Text, TouchableOpacity, Image, StyleSheet} from 'react-native';
+import React, {useEffect, useRef} from 'react';
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  Image,
+  StyleSheet,
+  Animated,
+} from 'react-native';
 import {fonts} from '../assets';
 import {useNavigation} from '@react-navigation/native';
 import ImageLoader from './ImageLoader';
@@ -7,7 +14,30 @@ import ImageLoader from './ImageLoader';
 const HomeItem = ({item, index}) => {
   const navigation = useNavigation();
   const even_card = index % 2 == 0;
-  console.log(index,"index")
+  const scale = useRef(new Animated.Value(1)).current;
+
+  useEffect(() => {
+    const animateZoom = () => {
+      Animated.sequence([
+        Animated.timing(scale, {
+          toValue: 1.1, // Scale up to 1.2 times
+          duration: 500, // Duration for zoom in
+          useNativeDriver: true,
+        }),
+        Animated.timing(scale, {
+          toValue: 1, // Scale back to original size
+          duration: 500, // Duration for zoom out
+          useNativeDriver: true,
+        }),
+      ]).start(() => {
+        animateZoom(); // Repeat the animation
+      });
+    };
+
+    animateZoom();
+  }, [scale]);
+
+  console.log(index, 'index');
   return (
     <TouchableOpacity
       activeOpacity={0.8}
@@ -20,7 +50,9 @@ const HomeItem = ({item, index}) => {
         <ImageLoader
           source={{uri: item?.teamHomeBadge}}
           style={styles.teamImage}
-          activityIndicatorStyle={{backgroundColor:even_card?'#1029AA' : '#ED1645'}}
+          activityIndicatorStyle={{
+            backgroundColor: even_card ? '#1029AA' : '#ED1645',
+          }}
         />
         <Text style={styles.teamName}>{item.matchHometeamName}</Text>
       </View>
@@ -43,8 +75,8 @@ const HomeItem = ({item, index}) => {
           <Text style={styles.vs}>-</Text>
           <Text style={styles.vs}>{item?.matchAwayteamScore}</Text>
         </View>
-        {item.matchStatus ? (
-          <Text style={styles.degree}>{item?.matchStatus}</Text>
+        {item?.match_live === 1 ? (
+          <Text style={styles.degree}>{item?.matchStatus}'</Text>
         ) : (
           <View style={styles.timeContainer}>
             <Text style={styles.time}>{item.time}</Text>
@@ -56,18 +88,30 @@ const HomeItem = ({item, index}) => {
         <ImageLoader
           source={{uri: item?.teamAwayBadge}}
           style={styles.teamImage}
-          activityIndicatorStyle={{backgroundColor:even_card?'#1029AA' : '#ED1645'}}
+          activityIndicatorStyle={{
+            backgroundColor: even_card ? '#1029AA' : '#ED1645',
+          }}
         />
         <Text style={styles.teamName}>{item.matchAwayteamName}</Text>
       </View>
-      {item?.match_live && (
-        <View
+      {item?.match_live === 1 && (
+        // <View
+        //   style={[
+        //     styles.liveContainer,
+        //     {backgroundColor: !even_card ? '#1029AA' : '#ED1645'},
+        //   ]}>
+        //   <Text style={styles.live}>Live Now</Text>
+        // </View>
+        <Animated.View
           style={[
             styles.liveContainer,
-            {backgroundColor: !even_card ? '#1029AA' : '#ED1645'},
+            {
+              backgroundColor: !even_card ? '#1029AA' : '#ED1645',
+              transform: [{scale}],
+            },
           ]}>
           <Text style={styles.live}>Live Now</Text>
-        </View>
+        </Animated.View>
       )}
     </TouchableOpacity>
   );
@@ -147,11 +191,13 @@ const styles = StyleSheet.create({
   },
   liveContainer: {
     position: 'absolute',
-    // backgroundColor: '#ED1645',
     borderRadius: 30,
-    padding: 4,
+    paddingHorizontal: 8,
+    paddingVertical: 5,
     right: 10,
     top: 10,
+    borderWidth: 1,
+    borderColor: 'white',
   },
   live: {
     fontSize: 9,

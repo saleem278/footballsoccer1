@@ -53,11 +53,11 @@ const MatchItem = ({match}) => {
           <Text style={styles.teamName}>{match_awayteam_name}</Text>
         </View>
       </View>
-      {matchStatus && (
+      {match_live ? (
         <View style={{position: 'absolute', top: 33, right: 40}}>
           <Text style={[styles.degree]}>{matchStatus}</Text>
         </View>
-      )}
+      ):null}
       {!match_live ? (
         <View
           style={{

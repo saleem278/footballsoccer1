@@ -185,6 +185,7 @@ const styles = StyleSheet.create({
     height: 48,
     // borderRadius: 25,
     marginBottom: 20,
+    backgroundColor:"#181829",
     resizeMode: 'contain',
   },
   teamName: {

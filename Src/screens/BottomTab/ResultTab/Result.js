@@ -166,14 +166,25 @@ const Result = () => {
     }
   };
 
+  const handleResetDate = () => {
+    setResultsData([]);
+    setCurrentPage(1);
+    setLoading(false);
+    setHasMore(true);
+    setSelectedDate(null);
+    setInitialDataLoaded(false);
+  };
+
   return (
     <View style={styles.container}>
       <CustomHeader
         title="Result"
-        showIcon={true}
+        showIcon={false}
         iconSource={null}
         onPress={() => {}}
         scrollY={scrollY}
+        resetButton={selectedDate ? true : false}
+        handleResetClick={handleResetDate}
       />
       <Animated.ScrollView
         style={styles.scrollView}

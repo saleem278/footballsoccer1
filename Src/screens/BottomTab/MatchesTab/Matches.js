@@ -167,18 +167,29 @@ const Result = () => {
     };
   }, [scrollY]);
 
+  const handleResetDate = () => {
+    setResultsData([]);
+    setCurrentPage(1);
+    setLoading(false);
+    setHasMore(true);
+    setSelectedDate(null);
+    setInitialDataLoaded(false);
+  };
+
   return (
     <View style={styles.container}>
       <CustomHeader
         title="Matches"
-        showIcon={true}
+        showIcon={false}
         iconSource={null}
         onPress={() => {}}
         scrollY={scrollY}
+        resetButton={selectedDate ? true : false}
+        handleResetClick={handleResetDate}
       />
       <Animated.ScrollView
         style={styles.scrollView}
-        onScroll={(e) => {
+        onScroll={e => {
           Animated.event([{nativeEvent: {contentOffset: {y: scrollY}}}], {
             useNativeDriver: false,
           })(e);

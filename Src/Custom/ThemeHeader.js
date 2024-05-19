@@ -40,7 +40,7 @@ const ThemeHeader = ({
         />
       </TouchableOpacity>
       <Text style={styles.title}>{title}</Text>
-      <View
+      {/* <View
         style={{
           flexDirection: 'row',
           alignItems: 'center',
@@ -68,7 +68,7 @@ const ThemeHeader = ({
             source={IconPath.shareIcon}
           />
         </TouchableOpacity>
-      </View>
+      </View> */}
     </Animated.View>
   );
 };

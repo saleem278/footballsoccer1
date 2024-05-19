@@ -277,161 +277,166 @@ const Lineup = ({route}) => {
               // }}
             />
           </View>
-
-          <View
-            style={{
-              flex: 1,
-              marginTop: 20,
-              borderWidth: 1,
-              borderRadius: 6,
-              borderColor: '#F3F3F3',
-              marginBottom: 30,
-            }}>
-            <FlatList
-              nestedScrollEnabled
-              data={homesubstitutions}
-              showsHorizontalScrollIndicator={false}
-              showsVerticalScrollIndicator={false}
-              renderItem={({item, index}) => {
-                return (
-                  <View
-                    style={{
-                      borderRadius: 6,
-                    }}>
-                    {index === 0 && (
-                      <View
-                        style={[
-                          styles._renderItemHeader,
-                          {backgroundColor: '#F1F1F1'},
-                        ]}>
-                        <View
-                          style={{
-                            alignItems: 'center',
-                            flexDirection: 'row',
-                          }}>
-                          <Text
-                            style={{
-                              color: '#181829',
-                              fontSize: 14,
-                              fontFamily: fonts.bold,
-                              fontWeight: '700',
-                              lineHeight: 18,
-                              marginLeft: 5,
-                            }}>
-                            SUBSTITUTIONS
-                          </Text>
-                        </View>
-                      </View>
-                    )}
-                    <View
-                      style={{
-                        paddingVertical: 15,
-                        paddingHorizontal: 10,
-                        alignItems: 'center',
-                        flexDirection: 'row',
-                        borderBottomWidth: 1,
-                        borderBottomColor: '#F3F3F3',
-                      }}>
+          <>
+            {homesubstitutions?.length > 0 ? (
+              <View
+                style={{
+                  flex: 1,
+                  marginTop: 20,
+                  borderWidth: 1,
+                  borderRadius: 6,
+                  borderColor: '#F3F3F3',
+                  marginBottom: 30,
+                }}>
+                <FlatList
+                  nestedScrollEnabled
+                  data={homesubstitutions}
+                  showsHorizontalScrollIndicator={false}
+                  showsVerticalScrollIndicator={false}
+                  renderItem={({item, index}) => {
+                    return (
                       <View
                         style={{
-                          alignItems: 'center',
-                          flexDirection: 'row',
+                          borderRadius: 6,
                         }}>
-                        <Text
+                        {index === 0 && (
+                          <View
+                            style={[
+                              styles._renderItemHeader,
+                              {backgroundColor: '#F1F1F1'},
+                            ]}>
+                            <View
+                              style={{
+                                alignItems: 'center',
+                                flexDirection: 'row',
+                              }}>
+                              <Text
+                                style={{
+                                  color: '#181829',
+                                  fontSize: 14,
+                                  fontFamily: fonts.bold,
+                                  fontWeight: '700',
+                                  lineHeight: 18,
+                                  marginLeft: 5,
+                                }}>
+                                SUBSTITUTIONS
+                              </Text>
+                            </View>
+                          </View>
+                        )}
+                        <View
                           style={{
-                            color: '#181829',
-                            fontSize: 14,
-                            fontFamily: fonts.bold,
-                            fontWeight: '600',
-                            lineHeight: 18,
+                            paddingVertical: 15,
+                            paddingHorizontal: 10,
+                            alignItems: 'center',
+                            flexDirection: 'row',
+                            borderBottomWidth: 1,
+                            borderBottomColor: '#F3F3F3',
                           }}>
-                          {item.time}'
-                        </Text>
-                        <Image
-                          style={{
-                            width: 25,
-                            height: 25,
-                            resizeMode: 'center',
-                            marginRight: 20,
-                            marginLeft: 5,
-                          }}
-                          source={IconPath.arrowupdown}
-                        />
+                          <View
+                            style={{
+                              alignItems: 'center',
+                              flexDirection: 'row',
+                            }}>
+                            <Text
+                              style={{
+                                color: '#181829',
+                                fontSize: 14,
+                                fontFamily: fonts.bold,
+                                fontWeight: '600',
+                                lineHeight: 18,
+                              }}>
+                              {item.time}'
+                            </Text>
+                            <Image
+                              style={{
+                                width: 25,
+                                height: 25,
+                                resizeMode: 'center',
+                                marginRight: 20,
+                                marginLeft: 5,
+                              }}
+                              source={IconPath.arrowupdown}
+                            />
+                          </View>
+                          <View>
+                            <Text
+                              style={{
+                                color: '#181829',
+                                fontSize: 14,
+                                fontFamily: fonts.bold,
+                                fontWeight: '600',
+                                lineHeight: 18,
+                              }}>
+                              {item.substitution &&
+                                item.substitution.split('|').length > 0 &&
+                                item.substitution.split('|')[0]}
+                            </Text>
+                            <Text
+                              style={{
+                                color: '#939598',
+                                fontSize: 12,
+                                fontFamily: fonts.bold,
+                                fontWeight: '500',
+                                lineHeight: 18,
+                              }}>
+                              {item.substitution &&
+                                item.substitution.split('|').length > 1 &&
+                                item.substitution.split('|')[1]}
+                            </Text>
+                          </View>
+                        </View>
                       </View>
-                      <View>
-                        <Text
-                          style={{
-                            color: '#181829',
-                            fontSize: 14,
-                            fontFamily: fonts.bold,
-                            fontWeight: '600',
-                            lineHeight: 18,
-                          }}>
-                          {item.substitution &&
-                            item.substitution.split('|').length > 0 &&
-                            item.substitution.split('|')[0]}
-                        </Text>
-                        <Text
-                          style={{
-                            color: '#939598',
-                            fontSize: 12,
-                            fontFamily: fonts.bold,
-                            fontWeight: '500',
-                            lineHeight: 18,
-                          }}>
-                          {item.substitution &&
-                            item.substitution.split('|').length > 1 &&
-                            item.substitution.split('|')[1]}
-                        </Text>
-                      </View>
-                    </View>
-                  </View>
-                );
-              }}
-              // ListEmptyComponent={() => {
-              //   return (
-              //     <View>
-              //       <View
-              //         style={[
-              //           styles._renderItemHeader,
-              //           {backgroundColor: '#F1F1F1'},
-              //         ]}>
-              //         <View
-              //           style={{
-              //             alignItems: 'center',
-              //             flexDirection: 'row',
-              //           }}>
-              //           <Text
-              //             style={{
-              //               color: '#181829',
-              //               fontSize: 14,
-              //               fontFamily: fonts.bold,
-              //               fontWeight: '700',
-              //               lineHeight: 18,
-              //               marginLeft: 5,
-              //             }}>
-              //             SUBSTITUTIONS
-              //           </Text>
-              //         </View>
-              //       </View>
-              //       <Text
-              //         style={{
-              //           color: '#000',
-              //           fontSize: 14,
-              //           fontFamily: fonts.bold,
-              //           fontWeight: '600',
-              //           lineHeight: 18,
-              //           marginLeft: 5,
-              //           paddingVertical: 10,
-              //           textAlign: 'center',
-              //         }}>
-              //         No Data
-              //       </Text>
-              //     </View>
-              //   );
-              // }}
-            />
-          </View>
+                    );
+                  }}
+                  // ListEmptyComponent={() => {
+                  //   return (
+                  //     <View>
+                  //       <View
+                  //         style={[
+                  //           styles._renderItemHeader,
+                  //           {backgroundColor: '#F1F1F1'},
+                  //         ]}>
+                  //         <View
+                  //           style={{
+                  //             alignItems: 'center',
+                  //             flexDirection: 'row',
+                  //           }}>
+                  //           <Text
+                  //             style={{
+                  //               color: '#181829',
+                  //               fontSize: 14,
+                  //               fontFamily: fonts.bold,
+                  //               fontWeight: '700',
+                  //               lineHeight: 18,
+                  //               marginLeft: 5,
+                  //             }}>
+                  //             SUBSTITUTIONS
+                  //           </Text>
+                  //         </View>
+                  //       </View>
+                  //       <Text
+                  //         style={{
+                  //           color: '#000',
+                  //           fontSize: 14,
+                  //           fontFamily: fonts.bold,
+                  //           fontWeight: '600',
+                  //           lineHeight: 18,
+                  //           marginLeft: 5,
+                  //           paddingVertical: 10,
+                  //           textAlign: 'center',
+                  //         }}>
+                  //         No Data
+                  //       </Text>
+                  //     </View>
+                  //   );
+                  // }}
+                />
+              </View>
+            ) : (
+              <></>
+            )}
+          </>
         </ScrollView>
       ) : (
         <ScrollView
@@ -617,161 +622,166 @@ const Lineup = ({route}) => {
               // }}
             />
           </View>
-
-          <View
-            style={{
-              flex: 1,
-              marginTop: 20,
-              borderWidth: 1,
-              borderRadius: 6,
-              borderColor: '#F3F3F3',
-              marginBottom: 30,
-            }}>
-            <FlatList
-              nestedScrollEnabled
-              data={awaysubstitutions}
-              showsHorizontalScrollIndicator={false}
-              showsVerticalScrollIndicator={false}
-              renderItem={({item, index}) => {
-                return (
-                  <View
-                    style={{
-                      borderRadius: 6,
-                    }}>
-                    {index === 0 && (
-                      <View
-                        style={[
-                          styles._renderItemHeader,
-                          {backgroundColor: '#F1F1F1'},
-                        ]}>
-                        <View
-                          style={{
-                            alignItems: 'center',
-                            flexDirection: 'row',
-                          }}>
-                          <Text
-                            style={{
-                              color: '#181829',
-                              fontSize: 14,
-                              fontFamily: fonts.bold,
-                              fontWeight: '700',
-                              lineHeight: 18,
-                              marginLeft: 5,
-                            }}>
-                            SUBSTITUTIONS
-                          </Text>
-                        </View>
-                      </View>
-                    )}
-                    <View
-                      style={{
-                        paddingVertical: 15,
-                        paddingHorizontal: 10,
-                        alignItems: 'center',
-                        flexDirection: 'row',
-                        borderBottomWidth: 1,
-                        borderBottomColor: '#F3F3F3',
-                      }}>
+          <>
+            {awaysubstitutions?.length > 0 ? (
+              <View
+                style={{
+                  flex: 1,
+                  marginTop: 20,
+                  borderWidth: 1,
+                  borderRadius: 6,
+                  borderColor: '#F3F3F3',
+                  marginBottom: 30,
+                }}>
+                <FlatList
+                  nestedScrollEnabled
+                  data={awaysubstitutions}
+                  showsHorizontalScrollIndicator={false}
+                  showsVerticalScrollIndicator={false}
+                  renderItem={({item, index}) => {
+                    return (
                       <View
                         style={{
-                          alignItems: 'center',
-                          flexDirection: 'row',
+                          borderRadius: 6,
                         }}>
-                        <Text
+                        {index === 0 && (
+                          <View
+                            style={[
+                              styles._renderItemHeader,
+                              {backgroundColor: '#F1F1F1'},
+                            ]}>
+                            <View
+                              style={{
+                                alignItems: 'center',
+                                flexDirection: 'row',
+                              }}>
+                              <Text
+                                style={{
+                                  color: '#181829',
+                                  fontSize: 14,
+                                  fontFamily: fonts.bold,
+                                  fontWeight: '700',
+                                  lineHeight: 18,
+                                  marginLeft: 5,
+                                }}>
+                                SUBSTITUTIONS
+                              </Text>
+                            </View>
+                          </View>
+                        )}
+                        <View
                           style={{
-                            color: '#181829',
-                            fontSize: 14,
-                            fontFamily: fonts.bold,
-                            fontWeight: '600',
-                            lineHeight: 18,
+                            paddingVertical: 15,
+                            paddingHorizontal: 10,
+                            alignItems: 'center',
+                            flexDirection: 'row',
+                            borderBottomWidth: 1,
+                            borderBottomColor: '#F3F3F3',
                           }}>
-                          {item.time}'
-                        </Text>
-                        <Image
-                          style={{
-                            width: 25,
-                            height: 25,
-                            resizeMode: 'center',
-                            marginRight: 20,
-                            marginLeft: 5,
-                          }}
-                          source={IconPath.arrowupdown}
-                        />
+                          <View
+                            style={{
+                              alignItems: 'center',
+                              flexDirection: 'row',
+                            }}>
+                            <Text
+                              style={{
+                                color: '#181829',
+                                fontSize: 14,
+                                fontFamily: fonts.bold,
+                                fontWeight: '600',
+                                lineHeight: 18,
+                              }}>
+                              {item.time}'
+                            </Text>
+                            <Image
+                              style={{
+                                width: 25,
+                                height: 25,
+                                resizeMode: 'center',
+                                marginRight: 20,
+                                marginLeft: 5,
+                              }}
+                              source={IconPath.arrowupdown}
+                            />
+                          </View>
+                          <View>
+                            <Text
+                              style={{
+                                color: '#181829',
+                                fontSize: 14,
+                                fontFamily: fonts.bold,
+                                fontWeight: '600',
+                                lineHeight: 18,
+                              }}>
+                              {item.substitution &&
+                                item.substitution.split('|').length > 0 &&
+                                item.substitution.split('|')[0]}
+                            </Text>
+                            <Text
+                              style={{
+                                color: '#939598',
+                                fontSize: 12,
+                                fontFamily: fonts.bold,
+                                fontWeight: '500',
+                                lineHeight: 18,
+                              }}>
+                              {item.substitution &&
+                                item.substitution.split('|').length > 1 &&
+                                item.substitution.split('|')[1]}
+                            </Text>
+                          </View>
+                        </View>
                       </View>
-                      <View>
-                        <Text
-                          style={{
-                            color: '#181829',
-                            fontSize: 14,
-                            fontFamily: fonts.bold,
-                            fontWeight: '600',
-                            lineHeight: 18,
-                          }}>
-                          {item.substitution &&
-                            item.substitution.split('|').length > 0 &&
-                            item.substitution.split('|')[0]}
-                        </Text>
-                        <Text
-                          style={{
-                            color: '#939598',
-                            fontSize: 12,
-                            fontFamily: fonts.bold,
-                            fontWeight: '500',
-                            lineHeight: 18,
-                          }}>
-                          {item.substitution &&
-                            item.substitution.split('|').length > 1 &&
-                            item.substitution.split('|')[1]}
-                        </Text>
-                      </View>
-                    </View>
-                  </View>
-                );
-              }}
-              // ListEmptyComponent={() => {
-              //   return (
-              //     <View>
-              //       <View
-              //         style={[
-              //           styles._renderItemHeader,
-              //           {backgroundColor: '#F1F1F1'},
-              //         ]}>
-              //         <View
-              //           style={{
-              //             alignItems: 'center',
-              //             flexDirection: 'row',
-              //           }}>
-              //           <Text
-              //             style={{
-              //               color: '#181829',
-              //               fontSize: 14,
-              //               fontFamily: fonts.bold,
-              //               fontWeight: '700',
-              //               lineHeight: 18,
-              //               marginLeft: 5,
-              //             }}>
-              //             SUBSTITUTIONS
-              //           </Text>
-              //         </View>
-              //       </View>
-              //       <Text
-              //         style={{
-              //           color: '#000',
-              //           fontSize: 14,
-              //           fontFamily: fonts.bold,
-              //           fontWeight: '600',
-              //           lineHeight: 18,
-              //           marginLeft: 5,
-              //           paddingVertical: 10,
-              //           textAlign: 'center',
-              //         }}>
-              //         No Data
-              //       </Text>
-              //     </View>
-              //   );
-              // }}
-            />
-          </View>
+                    );
+                  }}
+                  // ListEmptyComponent={() => {
+                  //   return (
+                  //     <View>
+                  //       <View
+                  //         style={[
+                  //           styles._renderItemHeader,
+                  //           {backgroundColor: '#F1F1F1'},
+                  //         ]}>
+                  //         <View
+                  //           style={{
+                  //             alignItems: 'center',
+                  //             flexDirection: 'row',
+                  //           }}>
+                  //           <Text
+                  //             style={{
+                  //               color: '#181829',
+                  //               fontSize: 14,
+                  //               fontFamily: fonts.bold,
+                  //               fontWeight: '700',
+                  //               lineHeight: 18,
+                  //               marginLeft: 5,
+                  //             }}>
+                  //             SUBSTITUTIONS
+                  //           </Text>
+                  //         </View>
+                  //       </View>
+                  //       <Text
+                  //         style={{
+                  //           color: '#000',
+                  //           fontSize: 14,
+                  //           fontFamily: fonts.bold,
+                  //           fontWeight: '600',
+                  //           lineHeight: 18,
+                  //           marginLeft: 5,
+                  //           paddingVertical: 10,
+                  //           textAlign: 'center',
+                  //         }}>
+                  //         No Data
+                  //       </Text>
+                  //     </View>
+                  //   );
+                  // }}
+                />
+              </View>
+            ) : (
+              <></>
+            )}
+          </>
         </ScrollView>
       )}
     </View>

@@ -6,6 +6,8 @@ import {
   Image,
   TouchableOpacity,
   ScrollView,
+  Linking,
+  Alert,
 } from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import {IconPath, fonts} from '../../assets';
@@ -16,6 +18,18 @@ const SingleNews = ({route}) => {
   const navigation = useNavigation();
   const item = route?.params?.item;
 
+  const handleLinkOpen = async url => {
+    try {
+      const supported = await Linking.canOpenURL(url); //To check if URL is supported or not.
+      if (supported) {
+        await Linking.openURL(url); // It will open the URL on browser.
+      } else {
+        Alert.alert(`Don't know how to open this URL: ${url}`);
+      }
+    } catch (error) {
+      Alert.alert(error.message);
+    }
+  };
   return (
     <ScrollView style={styles.container}>
       <View style={styles.header}>
@@ -25,17 +39,27 @@ const SingleNews = ({route}) => {
         <Text style={styles.newsTitle}>{'News'}</Text>
       </View>
       <View style={styles.content}>
-        <Text style={styles.title}>{item.title}</Text>
-        <Text style={styles.subtitle}>{item.excerpt}</Text>
-        <ImageLoader source={{uri: item.image}} style={styles.newsImage} />
+        <Text style={styles.title}>{item?.title}</Text>
+        <Text style={styles.subtitle}>{item?.excerpt}</Text>
+        {item?.contentType === 1 ? (
+          <ImageLoader source={{uri: item?.image}} style={styles.newsImage} />
+        ) : (
+          <TouchableOpacity
+            onPress={() => handleLinkOpen(item?.url)}
+            activeOpacity={0.9}>
+            <ImageLoader
+              style={styles.newsImage}
+              source={{uri: item?.videoThumbnail}}
+            />
+          </TouchableOpacity>
+        )}
+        {item?.content_source && (
+          <Text style={styles.source_text}>Source: {item?.content_source}</Text>
+        )}
         <RenderHTML
-          // style={styles.description}
-          
           baseStyle={styles.description}
           source={{html: item.description}}
         />
-        {/* <Text style={styles.description}>{item.descriptionsecond}</Text>
-        <Text style={styles.description}>{item.descriptionthird}</Text> */}
       </View>
     </ScrollView>
   );
@@ -64,6 +88,10 @@ const styles = StyleSheet.create({
     color: '#181829',
     fontFamily: fonts.medium,
   },
+  source_text: {
+    // textAlign: 'right',
+    color: '#000',
+  },
   content: {
     flex: 1,
   },
@@ -82,10 +110,10 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   newsImage: {
-    height: 200,
+    height: 180,
     width: '100%',
-    resizeMode: 'contain',
-    marginBottom: 15,
+    resizeMode: 'stretch',
+    borderRadius: 8,
   },
   info: {
     flexDirection: 'row',

@@ -24,6 +24,7 @@ const News = () => {
   const [hasMore, setHasMore] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const [initialHandleMore, setInitailHandleMore] = useState(false);
+  const [isLastPage, setLastPage] = useState(false);
   const navigation = useNavigation();
   const focused = useIsFocused();
   useEffect(() => {
@@ -69,11 +70,13 @@ const News = () => {
         const parsedData = JSON.parse(result);
         if (parsedData && parsedData.hasOwnProperty('data')) {
           setLoading(false);
+          if (parsedData?.pagination?.last_page === currentPage) {
+            setLastPage(true);
+          }
           if (page > 1) {
             setNewsData(prevData => [...prevData, ...parsedData.data]);
             setHasMore(page < parsedData?.pagination?.last_page);
           } else {
-            console.log(page, parsedData);
             setHasMore(page <= parsedData?.pagination?.last_page);
             setNewsData(parsedData?.data);
             setLoading(false);
@@ -140,15 +143,22 @@ const News = () => {
               height: 200,
               borderColor: '#F6F6F6',
               borderRadius: 15,
+              marginBottom: 5,
             }}>
             <ImageLoader
-              style={{resizeMode: 'stretch'}}
+              style={{resizeMode: 'stretch', borderRadius: 8}}
               source={{uri: item?.image}}
             />
           </View>
 
           <View style={styles.newsContent}>
-            <Text style={styles.newsTitle}>{item.title}</Text>
+            <Text
+              style={[
+                styles.newsTitle,
+                {fontFamily: fonts.bold, fontWeight: '500'},
+              ]}>
+              {item.title}
+            </Text>
             <View
               style={{
                 flexDirection: 'row',
@@ -200,13 +210,13 @@ const News = () => {
               borderRadius: 15,
             }}>
             <ImageLoader
-              style={{width: 80, height: 80}}
+              style={{width: 80, borderRadius: 8, height: 80}}
               source={{uri: item?.image}}
             />
           </View>
 
           <View style={styles.newsContent}>
-            <Text style={styles.newsTitle}>{item.title}</Text>
+            <Text style={[styles.newsTitle, {fontSize: 14}]}>{item.title}</Text>
             <View
               style={{
                 flexDirection: 'row',
@@ -225,7 +235,7 @@ const News = () => {
   };
 
   const renderFooter = () => {
-    if (!loading && currentPage > 1) return null;
+    if ((!loading && currentPage > 1) || isLastPage) return null;
     return <ActivityIndicator size="large" color="#0000ff" />;
   };
 
@@ -333,19 +343,16 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   newsTitle: {
-    fontWeight: '600',
     fontSize: 16,
     marginBottom: 5,
     color: '#181829',
-    fontFamily: fonts.medium,
   },
   newsSubtitle: {
     marginBottom: 5,
-    // marginLeft: 5,
     color: '#181829',
-    fontSize: 12,
-    fontWeight: '500',
-    fontFamily: fonts.medium,
+    fontSize: 10,
+    fontWeight: '600',
+    fontFamily: fonts.bold,
   },
   newsTime: {
     color: '#938E8E',

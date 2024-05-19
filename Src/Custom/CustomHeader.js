@@ -10,7 +10,16 @@ import {
 } from 'react-native';
 import {fonts} from '../assets';
 
-const CustomHeader = ({title, iconSource, onPress, scrollY, showIcon,style}) => {
+const CustomHeader = ({
+  title,
+  iconSource,
+  onPress,
+  scrollY,
+  showIcon,
+  style,
+  resetButton,
+  handleResetClick,
+}) => {
   const headerBackgroundColor = scrollY.interpolate({
     inputRange: [0, 50],
     outputRange: ['white', '#edf5ff'],
@@ -24,11 +33,26 @@ const CustomHeader = ({title, iconSource, onPress, scrollY, showIcon,style}) => 
         styles.header,
         {
           backgroundColor: headerBackgroundColor,
-          justifyContent: showIcon ? 'space-between' : 'center',
+          justifyContent: showIcon || resetButton ? 'space-between' : 'center',
         },
       ]}>
       <StatusBar backgroundColor={headerBackgroundColor} />
       <Text style={styles.title}>{title}</Text>
+      {resetButton && (
+        <TouchableOpacity
+          style={{
+            paddingHorizontal: 10,
+            paddingVertical: 4,
+            backgroundColor: 'white',
+            borderRadius: 8,
+            elevation: 8,
+          }}
+          onPress={handleResetClick}>
+          <Text style={{color: '#34363D', fontSize: 12, fontWeight: '400'}}>
+            Reset
+          </Text>
+        </TouchableOpacity>
+      )}
       {showIcon && (
         <TouchableOpacity onPress={onPress}>
           <Image

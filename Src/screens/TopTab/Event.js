@@ -5,11 +5,12 @@ import {resultData} from '../../constants/Data';
 import MatchItem from '../../Custom/MatchItem';
 import {useIsFocused} from '@react-navigation/native';
 import {LiveUrl} from '../../backend/env';
+import ImageLoader from '../../Custom/ImageLoader';
 
 const Event = ({route}) => {
   const isFocused = useIsFocused();
   const id = route?.params?.id;
-  const [matchEventData, setMatchEventData] = useState([]); 
+  const [matchEventData, setMatchEventData] = useState([]);
   const ApiFetchData = async () => {
     const requestOptions = {
       method: 'GET',
@@ -21,7 +22,6 @@ const Event = ({route}) => {
       .then(result => {
         const parsedData = JSON.parse(result);
         setMatchEventData(parsedData?.data);
-        
       })
       .catch(error => console.error(error));
   };
@@ -55,13 +55,13 @@ const Event = ({route}) => {
             borderBottomWidth: 1,
             borderColor: '#ddd',
           }}>
-          <Image
+          <ImageLoader
             style={{
               width: 25,
               height: 25,
               resizeMode: 'contain',
             }}
-            source={{uri: matchEventData?.leagueLogo}}></Image>
+            source={{uri: matchEventData?.leagueLogo}}></ImageLoader>
           <View
             style={{
               marginLeft: 8,
@@ -94,14 +94,16 @@ const Event = ({route}) => {
               alignItems: 'flex-start',
             }}>
             <View style={styles.teamColumn}>
-              <Image
+              <ImageLoader
                 source={{uri: matchEventData?.teamHomeBadge}}
                 style={styles.teamIcon}
               />
-              <Text style={styles.teamName}>{matchEventData?.match_hometeam_name}</Text>
+              <Text style={styles.teamName}>
+                {matchEventData?.match_hometeam_name}
+              </Text>
             </View>
             <View style={styles.teamColumn}>
-              <Image
+              <ImageLoader
                 source={{uri: matchEventData?.teamAwayBadge}}
                 style={styles.teamIcon}
               />

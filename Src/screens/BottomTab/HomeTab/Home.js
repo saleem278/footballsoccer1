@@ -64,7 +64,7 @@ const Home = () => {
       })
       .catch(error => {
         setLoading(false);
-        Alert.alert(JSON.stringify(error));
+        Alert.alert("Warning",JSON.stringify(error));
         console.error(error);
       });
   };
@@ -98,15 +98,16 @@ const Home = () => {
               height: 200,
               borderColor: '#F6F6F6',
               borderRadius: 15,
+              marginBottom:5
             }}>
             <ImageLoader
-              style={{resizeMode: 'stretch'}}
+              style={{resizeMode: 'stretch',borderRadius:8,}}
               source={{uri: item?.image}}
             />
           </View>
 
           <View style={styles.newsContent}>
-            <Text style={styles.newsTitle}>{item.title}</Text>
+            <Text style={[styles.newsTitle,{fontFamily:fonts.bold}]}>{item.title}</Text>
             <View
               style={{
                 flexDirection: 'row',
@@ -117,7 +118,7 @@ const Home = () => {
                 style={{
                   flexDirection: 'row',
                 }}>
-                <Text style={styles.newsSubtitle}>{item.category_name}</Text>
+                <Text style={styles.newsSubtitle}>{item?.category_name}</Text>
               </View>
               <Text
                 style={[
@@ -126,7 +127,7 @@ const Home = () => {
                     fontSize: 12,
                   },
                 ]}>
-                {item.formattedCreatedAt}
+                {item?.formattedCreatedAt}
               </Text>
             </View>
           </View>
@@ -158,13 +159,13 @@ const Home = () => {
               borderRadius: 15,
             }}>
             <ImageLoader
-              style={{width: 80, height: 80}}
+              style={{width: 80,borderRadius:8, height: 80}}
               source={{uri: item?.image}}
             />
           </View>
 
           <View style={styles.newsContent}>
-            <Text style={styles.newsTitle}>{item.title}</Text>
+            <Text style={[styles.newsTitle,{fontSize:12}]}>{item.title}</Text>
             <View
               style={{
                 flexDirection: 'row',
@@ -172,7 +173,7 @@ const Home = () => {
                 justifyContent: 'space-between',
               }}>
               <View>
-                <Text style={styles.newsSubtitle}>{item.category_name}</Text>
+                <Text style={styles.newsSubtitle}>{item?.category_name}</Text>
               </View>
               <Text style={styles.newsTime}>{item?.formattedCreatedAt}</Text>
             </View>
@@ -276,18 +277,15 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   newsTitle: {
-    fontWeight: '600',
-    fontSize: 16,
+    fontSize: 14,
     marginBottom: 5,
     color: '#181829',
-    fontFamily: fonts.medium,
   },
   newsSubtitle: {
     marginBottom: 5,
     color: '#181829',
-    fontSize: 12,
-    fontWeight: '500',
-    fontFamily: fonts.medium,
+    fontSize: 10,
+    fontFamily: fonts.bold,
   },
   newsTime: {
     color: '#938E8E',
